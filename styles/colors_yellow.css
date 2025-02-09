@@ -1,0 +1,18 @@
+:root { 
+    --background-color: #ffff77;
+    --text-color: #000000;
+    --icon-color: #000000;
+
+    --box-border-color: #000000;
+    --img-border-color: #000000;
+
+    --navigation-link-color: #ffff77;
+
+    --code-border-color: #000000;
+    --code-background-color: #000000;
+    --code-text-color: #ffff77;
+
+    --directory-list-background-color: #ffff77;
+    --directory-list-border-color: #000000;
+    --directory-list-text-color: #000000;
+}
