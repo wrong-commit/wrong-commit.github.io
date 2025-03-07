@@ -1,0 +1,3 @@
+iam_role_name: DEBUG-pik-uat-ec2
+iam_policy_name: DEBUG-pik-uat-ec2-secret-manager-policy
+# secrets_manager_arn: arn:aws:secretsmanager:ap-southeast-2:533045138975:secret:pik-manual-test-zCCqpc

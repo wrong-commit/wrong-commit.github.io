@@ -1,0 +1,110 @@
+{
+  "root": [
+    {
+      "parent": "/",
+      "name": "cryptor_and_loader",
+      "type": "dir",
+      "children": [
+        {
+          "parent": "/cryptor_and_loader/",
+          "name": "cryptor_and_loader.vcxproj",
+          "type": "file"
+        },
+        {
+          "parent": "/cryptor_and_loader/",
+          "name": "cryptor_and_loader.vcxproj.filters",
+          "type": "file"
+        },
+        {
+          "parent": "/cryptor_and_loader/",
+          "name": "cryptor.cpp",
+          "type": "file"
+        },
+        {
+          "parent": "/cryptor_and_loader/",
+          "name": "loader.exe",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "parent": "/",
+      "name": "loader",
+      "type": "dir",
+      "children": [
+        {
+          "parent": "/loader/",
+          "name": "loader-release.props",
+          "type": "file"
+        },
+        {
+          "parent": "/loader/",
+          "name": "loader.cpp",
+          "type": "file"
+        },
+        {
+          "parent": "/loader/",
+          "name": "loader.props",
+          "type": "file"
+        },
+        {
+          "parent": "/loader/",
+          "name": "loader.vcxproj",
+          "type": "file"
+        },
+        {
+          "parent": "/loader/",
+          "name": "loader.vcxproj.filters",
+          "type": "file"
+        },
+        {
+          "parent": "/loader/",
+          "name": "malware_external.h",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "parent": "/",
+      "name": "Output",
+      "type": "dir",
+      "children": [
+        {
+          "parent": "/Output/",
+          "name": "cryptor-Release.exe",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "parent": "/",
+      "name": ".gitignore",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "anti_vm.h",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "cryptor_and_loader.sln",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "cryptor_sig.h",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "README.md",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "remove_pe_header.h",
+      "type": "file"
+    }
+  ]
+}
