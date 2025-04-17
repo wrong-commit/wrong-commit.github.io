@@ -1,0 +1,697 @@
+<html>
+
+<head>
+    <title>digikit migration | quinn's portfolio</title>
+    <link rel="stylesheet" href="/styles/colors_yellow.css" />
+    <link rel="stylesheet" href="/styles/dir_box.css" />
+    <link rel="stylesheet" href="/styles/head.css" />
+    <link rel="stylesheet" href="/styles/font.css" />
+    <!-- Font imports -->
+    <!-- Roboto -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <!-- Space Grotesk -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Fantasque Sans Mono';
+            src: url('/assets/Webfonts/FantasqueSansMono-Regular.eot');
+            /* IE 9 Compatibility Mode */
+            src: url('/assets/Webfonts/FantasqueSansMono-Regular.eot?#iefix') format('embedded-opentype'),
+                /* IE < 9 */
+                url('/assets/Webfonts/FantasqueSansMono-Regular.woff2') format('woff2'),
+                url('/assets/Webfonts/FantasqueSansMono-Regular.woff') format('woff'),
+                /* Firefox >= 3.6, any other modern browser */
+                url('/assets/Webfonts/FantasqueSansMono-Regular.ttf') format('truetype'),
+                /* Safari, Android, iOS */
+                url('/assets/Webfonts/FantasqueSansMono-Regular.svg#FantasqueSansMono-Regular') format('svg');
+            /* Chrome < 4, Legacy iOS */
+            font-weight: 400;
+            font-style: normal;
+        }
+    </style>
+
+    <!--Font awesome 5-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/solid.css"
+        integrity="sha384-osqezT+30O6N/vsMqwW8Ch6wKlMofqueuia2H7fePy42uC05rm1G+BUPSd2iBSJL" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/brands.css"
+        integrity="sha384-BCEeiNUiLzxxoeYaIu7jJqq0aVVz2O2Ig4WbWEmRQ2Dx/AAxNV1wMDBXyyrxw1Zd" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/fontawesome.css"
+        integrity="sha384-BzCy2fixOYd0HObpx3GMefNqdbA7Qjcc91RgYeDjrHTIEXqiF00jKvgQG0+zY/7I" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="box page_raised">
+            <div class="box line_box reverse">
+                <h2 class="header">2024-09 | Heroku Migration for Raine & Horne</h2>
+            </div>
+            <div class="box line_box" style="flex-direction:column; justify-content:flex-start;">
+                <div class="box">
+                    <p class="text">
+                        Raine & Horne, an Australian real estate franchise group, host an internal property proposal
+                        management system named DigiKit. This software provides business support to the property agents
+                        that use it daily. There is both a UAT and a Production stack.
+                    </p>
+                    <p><br></p>
+                    <p class="text">
+                        DigiKit was hosted on Heroku. This internal business application
+                        consists of a front end React application and a Node JS back end API server. The database is
+                        hosted on MongoDB Cloud as a Serverless database instance.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box" style="flex-direction:column">
+                <h2 class="header">Why Migrate?</h2>
+                <div class="box">
+                    <div class="column">
+                        <div style="margin-right: 1rem">
+                            <p class="text">
+                                The application was designed a number of years ago, and has not been updated off of its
+                                original platform since. Heroku is now dropping support for these legacy platforms,
+                                meaning it is either time to upgrade the application or move to a different host.
+                            </p>
+                            <p><br></p>
+                            <p class="text">
+                                Simply updating the version the Heroku instances run as caused increases in system
+                                memory and caused many application errors.
+                            </p>
+                            <p><br></p>
+                            <p class="text">
+                                Given the front end application builds on Node JS 14 and runs on React v16.9, upgrading
+                                the application seemed more likely to break existing functionality, and some
+                                dependencies had no clear upgrade path. There were also increased cost associated with
+                                running the newer Heroku platform.
+                            </p>
+                            <p><br></p>
+                            <p class="text">
+                                The API runs on Node JS 17, meaning work was still required to upgrade the underlying
+                                Node JS version and the application's dependencies.
+                            </p>
+                            <p><br></p>
+                            <p class="text">
+                                Ultimately the business decided to migrate the entire application off Heroku for cost
+                                savings and long term support.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box" style="flex-direction:column; padding-bottom: 20px">
+                <h2 class="header">What is the plan?</h2>
+            </div>
+            <div class="box line_box">
+                <div class="box">
+                    <div class="column">
+                        <div style="margin-right: 1rem">
+                            <p class="text">
+                                My solution to this problem was to container each application and host them on an AWS EC2 virtual machine. 
+                                ECS Fargate was considered, but ultimately the EC2 approach was chosen as the fastest, cheapest way to spin up the infra. 
+                                This does mean blue/green deployments are not supported and failed deployments must be manually rolled back.
+                                This tradeoff was acceptable for a project that does not receive many updates anymore, and tolerates downtime.
+                            </p>
+                            <p><br></p>
+                            <p class="text">
+                                Migrating off of Heroku meant reimplementing existing features, such as the
+                                containerization provided by Heroku, the CI/CD pipeline, and cloud based logging. These
+                                features were implemented using existing cloud based products that Raine & Horne
+                                already make use of as part of their tech stack.
+                            </p>
+                            <p><br></p>
+                            <p class="text">
+                                The cloud diagram for this application can be seen to the side.
+                            </p>
+                            <p><br></p>
+                            <p class="text">
+                                Heroku also implements a global CDN which improves performance for users outside the region of hosting. 
+                                This feature has not yet been implemented on the AWS environment. It would be implemented using CloudFront or CloudFlare. 
+                            </p>
+                        </div>
+                        <img class="img page_raised" src="/imgs/digikit_cloud_layout.PNG"
+                            style="width: 45vw; height: 50%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="box page_raised">
+
+            <div class="box line_box" style="flex-direction:column;">
+                <h2 class="header">EC2 Virtual Machine</h2>
+                <div class="box">
+                    <p class="text">
+                    A EC2 virtual machine was created for each environment in a new AWS Account. The EC2 VM was assigned
+                    an IAM role with the Permission Policy `CloudWatchAgentServerPolicy`.
+                </p>
+                <p class="text">
+                    A new user account was created and an SSH key was saved against this account. The account was added
+                    to the `docker` group. This will allow the Github Actions pipeline to SSH into the server and run privileged 
+                    `docker` commands.
+                </p>
+            </div>
+            </div>
+
+            <div class="box line_box" style="flex-direction:column;">
+                <h2 class="header">Elastic Load Balancer and SSL</h2>
+                <div class="box">
+                    <p class="text">
+                        An Elastic Load Balancer was placed in front of each VM to route requests to the API and Front End
+                        appropriately.
+                    </p>
+                    <p class="text">
+                        The Security Group attached to the EC2 instance allows traffic from the Load Balancer to the 500X
+                        port each DigiKit application is hosted. This means the Docker containers are only accessible from
+                        the load balancer, which forwards traffic onto the correct Target Group based on the HTTP Host
+                        header.
+                    </p>
+                    <p class="text">
+                        A CNAME record pointing to the ELB was created for both API and Front End URLs. AWS ACM was used to
+                        provide SSL certificates for both domains.
+                    </p>
+                </div>
+            </div>
+            <div class="box line_box" style="flex-direction:column">
+                <h2 class="header">Github Actions CI/CD Pipeline</h2>
+                <div class="box">
+                    <p class="text">
+                        Github Actions were chosen as a cloud based CI/CD pipeline for deploying this application.
+                    </p>
+                    <p class="text">
+                        Build-time secrets and environment variables were stored in the Github Actions Environment for
+                        each branch that was to be deployed. The Docker file makes use of `ARG` statements to enforce
+                        build time variables. This was necessary for the React application which injects environment
+                        variables into the compiled JavaScript code.
+                    </p>
+                    <p class="text">
+                        After each application is built, the pipeline pushes the container image to AWS Elastic
+                        Container Registry and tags the image as `:latest`. The pipeline then SSH's into the dedicated
+                        DigiKit VM and uses docker compose to pull and start the latest containers.
+                    </p>
+                </div>
+                <h2 class="header">Github Actions Pipeline</h2>
+                <div class="box">
+                    <p class="text">
+                        A new deploy.yml file was committed to each Git repository that instructs the pipeline to deploy
+                        each container.
+                    </p>
+                    <p class="text">
+                        The following steps are performed by the pipeline: 
+                        <ol class="text">
+                            <li>Build the local Docker image</li>
+                            <li>Authenticate with AWS and push the container image to ECR</li>
+                            <li>SSH into the EC2 Virtual Machine and pull the latest container image</li>
+                            <li>Restart the Docker application using the latest image</li>
+                            <li>Delete the unused Docker containers to free up space on disk</li>
+                        </ol>
+                    </p>
+                    <p class="text">
+                        For this to work there needs to be a docker compose application defined on the EC2 server. This will be described below.
+                    </p>
+                </div>
+                <div class="box code_box" clicked="yes" style="height: 40rem;">
+                    <xmp class="document_display_box">
+name: publish
+on:
+    push:
+    branches: [ "deploy/dev", "deploy/main" ]
+env:
+    # The name of the private AWS ECR repository
+    ECR_REPOSITORY: your-ecr-here
+jobs:
+    publish:
+        name: publish image
+        runs-on: ubuntu-latest
+        environment: ${{ github.ref_name }}
+        permissions:
+            contents: read
+            packages: write
+        steps:
+        - name: Checkout
+            uses: actions/checkout@v2
+        - name: Configure AWS credentials
+            uses: aws-actions/configure-aws-credentials@v1
+            with:
+            aws-access-key-id: ${{ vars.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ vars.AWS_REGION }}
+        - name: Login to Amazon ECR
+            id: login-ecr
+            uses: aws-actions/amazon-ecr-login@v1
+        - name: Build, tag, and push image to Amazon ECR
+            id: build-image-client
+            env:
+            ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            IMAGE_TAG: digikit-server-adonis5
+            GITHUB_SHA: ${{github.sha}}
+            GITHUB_ACTOR: ${{github.actor}}
+            GITHUB_TOKEN: ${{github.token}}
+            run: |
+            # Build a docker container and
+            # push it to ECR so that it can
+            # be deployed to ECS.
+            docker build --build-arg GITHUB_ACTOR=${{github.actor}}  --build-arg GITHUB_TOKEN=${{github.token}} -t $GITHUB_SHA .
+            # Tag the docker image as latest
+            docker tag $GITHUB_SHA $ECR_REGISTRY/$ECR_REPOSITORY:latest
+            docker push $ECR_REGISTRY/$ECR_REPOSITORY
+            # Tag the docker image with the Github commit hash
+            docker tag $GITHUB_SHA $ECR_REGISTRY/$ECR_REPOSITORY:$GITHUB_SHA
+            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$GITHUB_SHA
+        - name: install ssh keys
+            # check this thread to understand why its needed:
+            # <https://stackoverflow.com/a/70447517>
+            run: |
+            install -m 600 -D /dev/null ~/.ssh/id_rsa
+            echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+            ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
+        - name: connect and pull
+            env: 
+            ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            # Authenticate Docker with ECR, pull the latest Docker container images and restart all docker containers. Cleanup old assets once containers are started
+            run: |
+            ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "aws ecr get-login-password | docker login --username AWS --password-stdin $ECR_REGISTRY && cd ${{ secrets.WORK_DIR }} && docker compose pull && docker compose up -d && docker image prune --all --force && exit"
+        - name: cleanup
+            run: rm -rf ~/.ssh
+                    </xmp>
+                </div>
+            </div>
+
+            <div class="box line_box" style="flex-direction:column">
+                <h2 class="header">Front End Dockerfile</h2>
+                <div class="box">
+                    <p class="text">
+                        The Docker file used to build and host the front end application is shown below. First the React
+                        application is compiled using Node JS 14.18.2, then nginx is used to host the static files.
+                    </p>
+                </div>
+                <div class="box">
+                    <br/>
+                    <p class="text">
+                        The Docker image we will base the application on aligns with the dated version of Node that is used in Heroku. 
+                    </p>
+                </div>
+                <div class="box code_box snippet" clicked="yes" style="">
+                    <xmp class="document_display_box">
+# Stage 1: Alpine Linux with Node JS 14.18.2
+FROM node:14.18.2-alpine as builder
+                    </xmp>
+                </div>
+                <div class="box">
+                    <p class="text">
+                        Create the Node JS build folder in the Docker image
+                    </p>
+                </div>
+                <div class="box code_box snippet" clicked="yes" style="">
+                    <xmp class="document_display_box">
+# Define application Node runs from
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app</xmp>
+                </div>
+                <div class="box">
+                    <p class="text">
+                        Assign Node JS environment variables. 
+                    </p>
+                    <p class="text">
+                        The ARG instructions are used to define environment variables that are injected 
+                        into the generated JavaScript files. These variables are defined in the Github Actions environment.
+                    </p>
+                </div>
+                <div class="box code_box snippet" clicked="yes" style="">
+                    <xmp class="document_display_box">
+# Defaults to production, docker-compose overrides this to development on build and run.
+ARG NODE_ENV=production
+ENV NODE_ENV $NODE_ENV
+ARG PUBLIC_URL
+ARG REACT_APP_API_URL
+# ... Include other build-time environment variables
+</xmp>
+                </div>
+                <div class="box">
+                    <p class="text">
+                        Only copy the package.json file to the build folder before running npm install. 
+                        This will let Docker cache the npm install command and only redownload assets when
+                        the package.json file changes.
+                    </p>
+                </div>
+                <div class="box code_box snippet" clicked="yes" style="">
+                    <xmp class="document_display_box"># Install dependencies
+COPY package.json /usr/src/app
+RUN npm install --also=dev
+</xmp>
+                </div>
+                <div class="box">
+                    <p class="text">
+                        Copy all files necessary for building the application into the /usr/src/app folder.
+                    </p>
+                </div>
+                <div class="box code_box snippet" clicked="yes" style="">
+                    <xmp class="document_display_box">
+# Copy application files to Node folder
+COPY tsconfig.json serve.json /usr/src/app/
+COPY ./src /usr/src/app/src
+COPY ./public /usr/src/public
+</xmp>
+</div>
+<div class="box">
+    <p class="text">
+        Generate the front end assets using npm build. 
+    </p>
+</div>
+<div class="box code_box snippet" clicked="yes" style="">
+    <xmp class="document_display_box">
+# Build React application
+RUN npm run build</xmp>
+</div>
+<div class="box">
+    <p class="text">
+        Define a second stage of the Docker image as an nginx server. This will allow us to minimise the size of the final Docker image
+        by only copying in the generated assets, instead of the whole node_modules folder and all source files.
+    </p>
+</div>
+<div class="box code_box snippet" clicked="yes" style="">
+    <xmp class="document_display_box">
+# Stage 2: Nginx image for serving static files
+FROM nginx:latest
+</xmp>
+</div>
+<div class="box">
+    <p class="text">
+        Overwrite the default nginx configuration, and then copy in the generated JS and static assets into 
+        the location defined in the nginx.conf file, /var/www. 
+    </p>
+    <p class="text">
+        Finally the Docker container is instructed to execute the nginx command when it starts up. 
+    </p>
+</div>
+<div class="box code_box snippet" clicked="yes" style="">
+    <xmp class="document_display_box">
+# Copy custom configuration file from the current directory
+COPY nginx.conf /etc/nginx/nginx.conf
+# Copy static assets into var/www
+COPY --from=builder /usr/src/app/build /var/www
+# Start up nginx server
+CMD ["nginx"]
+                    </xmp>
+                </div>
+            </div>
+
+            <div class="box line_box" style="flex-direction:column">
+                <h2 class="header">Front End Nginx Configuration</h2>
+                <div class="box">
+                    <p class="text">
+                        The nginx configuration for hosting static files was very straight forward. 
+                    </p>    
+                    <p class="text">
+                        The Heroku server would respond to all URLs with the same `/index.html` file. This
+                        was reimplemented in nginx in the `location /` block using the `try_files $uri $uri/
+                        /index.html` code. First it tries to serve static content then falls back to serving
+                        `/index.html`.
+                    </p>
+                </div>
+                <div class="box code_box snippet" clicked="yes">
+                    <xmp class="document_display_box">
+worker_processes auto;
+
+# Disable daemon
+daemon off;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    # Send Content-Type when serving static files
+    include    mime.types;
+    server {
+        listen 80;
+        index index.html;
+        root /var/www;
+        
+        # Configure access to static files
+        location / {
+            try_files $uri $uri/ /index.html  =404;
+        }
+    }
+}
+                    </xmp>
+                </div>
+            </div>
+
+
+            <div class="box line_box" style="flex-direction:column">
+                <h2 class="header">API Dockerfile</h2>
+                <div class="box">
+                    <p class="text">
+                        The API Docker file was more simple, as it used Node JS to build and run the application. Setting
+                        build time arguments for the API was not necessary. Instead, environment variables for the API were configured
+                        in the Docker Compose file for each application.
+                    </p>
+                </div>
+                <div class="box">
+                    <br/>
+                    <p class="text">
+                        The Docker image we will base the application on aligns with the current version of Node that Heroku uses. 
+                    </p>
+                </div>
+                <div class="box code_box snippet">
+                    <xmp class="document_display_box">
+# Stage 1: Alpine Linux with Node JS 17.5.0
+FROM node:17.5.0-alpine as builder
+                    </xmp>
+                </div>
+                <div class="box">
+                    <p class="text">
+                        The Docker image creates the API application folder
+                    </p>
+                </div>
+                <div class="box code_box snippet" clicked="yes" style="">
+                    <xmp class="document_display_box">
+# Define application Node runs from
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+                    </xmp>
+                </div>
+                <div class="box">
+                    <p class="text">
+                        Configure Node to run in production mode
+                    </p>
+                </div>
+                <div class="box code_box snippet" clicked="yes" style="">
+                    <xmp class="document_display_box">
+# Defaults to production, docker-compose overrides this to development on build and run.
+ARG NODE_ENV=production
+ENV NODE_ENV $NODE_ENV
+                    </xmp>
+                </div>
+                <div class="box">
+                    <p class="text">
+                        Copy the package.json file into the Node application folder and install the project dependencies. 
+                    </p>
+                    <p class="text">Copying only the 
+                        package.json file into the working directory as one of the first steps of the Docker file allows the node_modules 
+                        folder to be cached. This limits rebuilds during the local development phase.
+                    </p>
+                </div>
+                <div class="box code_box snippet" clicked="yes" style="">
+                    <xmp class="document_display_box">
+# Install dependencies
+COPY package.json /usr/src/app
+RUN npm install --also=dev --legacy-peer-deps
+                    </xmp>
+                </div>
+                <div class="box">
+                    <p class="text">
+                        Copy all files and folders necessary for the application to run. This will depend on your application, folder structure, and dependencies. 
+                    </p>
+                </div>
+                <div class="box code_box snippet" clicked="yes" style="">
+                    <xmp class="document_display_box">
+# Copy application files to Node folder
+COPY . .
+                    </xmp>
+                </div>
+                <div class="box">
+                    <p class="text">
+                        Build the application using the standard npm build process, then tell Docker to execute 
+                        the generated server.js file on startup. Be sure to use a second FROM command to reduce 
+                        the overall size of the final image. 
+                    </p>
+                </div>
+                <div class="box code_box snippet" clicked="yes" style="">
+                    <xmp class="document_display_box">
+# Build React application
+RUN npm run build
+# Stage 2: Run Node JS Web Server
+FROM node:17.5.0-alpine as server
+# Define application Node runs from
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+COPY --from=builder /usr/src/app/build /usr/src/app
+# Run the React application
+CMD ["node", "build/server.js"]
+                    </xmp>
+                </div>
+            </div>
+
+
+            <div class="box line_box" style="flex-direction:column">
+                <h2 class="header">Docker Compose</h2>
+                <div class="box">
+                    <p class="text">
+                        Docker compose was used to define each container on the EC2 VMs. The docker compose file is used
+                        to pull the latest container versions, deploy a new instance of the container using the
+                        predefined environment variables, and enables logging each container directly to CloudWatch.
+                    </p>
+                    <p class="text">
+                        One docker-compose.yml file was created for each application, instead of hosting both apps in one file.
+                        This has the benefit of only taking one container offline when restarting each part of the application. 
+                    </p>
+                    <p class="text">
+                        The docker compose templates were stored in the following folder structure.
+                    </p>
+                </div>
+                <div class="box code_box snippet" clicked="yes">
+                    <xmp class="document_display_box">
+docker
+|----digikit-frontend
+|----|----docker-compose.yml
+|----digikit-api
+|----|----docker-compose.yml
+                    </xmp>
+                </div>
+            </div>
+
+            <div class="box line_box" style="flex-direction:column;">
+                <h2 class="header">CloudWatch Logging</h2>
+                <div class="box">
+                    <p class="text">
+                        AWS CloudWatch was chosen to provide cloud based log retrieval for the DigiKit application. An
+                        IAM role was created for the EC2 VM to log to CloudWatch. CloudWatch integrates with Docker
+                        compose to stream logs for each container into the provided log group.
+                    </p>
+                    <p class="text">Each docker-compose.yml file had the following logging configuration.</p>
+                </div>
+                <div class="box code_box snippet" clicked="yes">
+                    <xmp class="document_display_box">
+services:
+    container-application:
+        container_name: api-container
+        logging:
+        driver: awslogs
+        options:
+            awslogs-region: ap-southeast-2
+            awslogs-group: /docker/digikit-frontend
+                    </xmp>
+                </div>
+                <div class="box code">
+                    <p class="text">
+                        CloudWatch was also configured to record the underlying Linux server logs.
+                    </p>
+                    <p class="text">
+                        Cron job logs, system logs, authentication logs, 
+                        and package management logs were all recorded into CloudWatch.
+                    </p>
+                </div>
+                <div class="box code_box snippet" clicked="yes">
+                    <xmp class="document_display_box">
+{
+	"agent": {
+		"metrics_collection_interval": 60,
+		"run_as_user": "root"
+	},
+	"logs": {
+		"logs_collected": {
+			"files": {
+				"collect_list": [
+					{
+						"file_path": "/var/log/syslog",
+						"log_group_name": "/ec2/log/syslog",
+						"log_stream_name": "{instance_id}"
+					},
+					{
+						"file_path": "/var/log/auth.log",
+						"log_group_name": "/ec2/log/auth",
+						"log_stream_name": "{instance_id}"
+					},
+					{
+						"file_path": "/var/log/maillog",
+						"log_group_name": "/ec2/log/maillog",
+						"log_stream_name": "{instance_id}"
+					},
+					{
+						"file_path": "/var/log/cron",
+						"log_group_name": "/ec2/log/cron",
+						"log_stream_name": "{instance_id}"
+					},
+					{
+						"file_path": "/var/log/dpkg.log",
+						"log_group_name": "/ec2/log/dpkg",
+						"log_stream_name": "{instance_id}"
+					}
+				]
+			}
+		}
+	}
+}
+                    </xmp>
+                </div>
+            </div>
+
+            <div class="box line_box" style="flex-direction:column;">
+                <h2 class="header">Server Monitoring</h2>
+                <div class="box">
+                    <p class="text">
+                        Pulseway was chosen as the main system uptime and monitoring software. CPU, Memory and Disk Alerts
+                        are all configured in Pulseway to provide the DevOps team immediate updates on the system's
+                        health.
+                    </p>
+                    <p class="text">
+                        Other monitoring software and messaging channels were implemented to provide redundant monitoring and 
+                        alerting to the DevOps team. 
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box" style="flex-direction:column; justify-content:flex-start;">
+                <h2 class="header">Documentation</h2>
+                <div class="box">
+                    <p class="text">
+                        It is important for DevOps teams to share technical and operational knowledge with every relevant
+                        team. This means documentating server infrastructure, CI/CD pipelines, daily and emergency tasks, and alert response 
+                        procedures. This information was added to R&H's existing wiki, and continues to be updated as required.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box" style="flex-direction:column; justify-content:flex-start;">
+                <h2 class="header">What lessons did I learn</h2>
+                <div class="box">
+                    <p class="text">
+                        Migrating an application out of Heroku is often a straight forward feat. It requires containerization (assuming this isn't already done), as well as implementing a secure CI/CD pipeline within Github Actions. Some changes to the application are likely 
+                        going to be required, so this should be factored into any effort estimations.
+                    </p>
+                    <p><br></p>
+                    <p class="text">
+                        Github Actions and AWS Container Repository make for a great CI/CD pipeline for any existing Linux virtual machine, without the need for extra software or CI/CD maintenance tasks.
+                    </p>
+                    <p><br></p>
+                    <p class="text">
+                        The developer experience working with Docker Compose is adequate. It is reasonably fast to turn 
+                        around common development tasks in docker, and the applications can still be run directly using 
+                        Node JS on the developer machines.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+</body>
+
+</html>

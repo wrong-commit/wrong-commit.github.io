@@ -1,0 +1,145 @@
+
+/* Style for the div that <xmp> tags are placed inside to render code. */
+.code_box {
+	line-height: 80%;
+	height:7em;
+	max-height: 80vh;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	padding:20px;
+	transition: all .5s ease-in-out;
+	font-size: 1em;
+}
+/* Opened file list and code box */
+.code_box.opened { 
+	height: 40em;
+}
+/* Collapsed file list and code box */
+.code_box.collapsed { 
+	height: 7em;
+}
+.code_box.collapsed .document_display_box { 
+	overflow-y: hidden;
+}
+.code_box.collapsed .dir_tree_box { 
+	overflow-y: hidden;
+}
+/* Custom styles for code boxes in blog posts, that should always be served
+* as full sized elements
+*/
+.code_box.snippet {
+	height: 100%;
+}
+/* Disable scroll bar for code snippets that are fully size */
+.code_box.snippet>.document_display_box { 
+	overflow-y: auto;
+}
+
+/* Div that displays Git code */
+.document_display_box{
+	border-color: var(--code-border-color);
+	border-width: 2px;
+	border-style: solid;
+	padding:15px;
+	margin:5px;
+	margin-right:5px;
+	
+	flex-grow: 1;
+	font-family: monospace;
+	line-height: 125%;
+	color: var(--code-text-color);
+	background-color: var(--code-background-color); 
+
+	white-space: pre-wrap;       /* css-3 */
+	white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+	white-space: -pre-wrap;      /* Opera 4-6 */
+	white-space: -o-pre-wrap;    /* Opera 7 */
+	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+
+	font-family: monospace;
+
+	overflow-y: scroll;
+}
+/* File/directory list div */
+.dir_tree_box {
+	color: var(--directory-list-text-color);
+	background-color: var(--directory-list-background-color); 
+	border: 2px solid var(--directory-list-border-color); 
+	margin:5px;
+	padding:10px; /* internal padding of directory listing box */
+	max-width: 18%; min-width: 18%;
+	white-space: nowrap;
+	list-style-type: none;
+	overflow-x: auto;
+	line-height: 150%;
+	font-family: 'Space Grotesk', Roboto, "sans-serif";
+	font-size: 90%;
+}
+/* Open directory <ul> */
+.dir_open {
+	color: var(--directory-list-text-color);
+	list-style-type: inherit;
+	padding-left:inherit; /* initial padding for item */
+}
+/* Close directory <ul> */
+.dir_closed {
+	color: var(--directory-list-text-color);
+	list-style-type: inherit;
+	padding-left:inherit; /* initial padding for item */
+}
+/* List item in open directory <ul> */
+.dir_open > li {
+	padding-left:5%;
+}
+/* Add |- text before each  */
+.dir_open > li::before {
+	color: var(--directory-list-text-color); 
+	font-weight: 900; 
+	content: "|- " !important;
+}
+/* Make hovered file/directory bold */
+.dir_tree_box li:hover {		
+	font-weight: bold;
+}
+/* Make hovered file/directory bold */
+.dir_tree_box span:hover {
+	font-weight: bold;
+}
+/* Collapse list items in <ul> */
+.dir_closed li {
+	display: none;
+}
+/* Collapse list items in <ul> */
+.dir_closed ul {
+	display: none;
+}
+/* Add Icon for closed <ul> */
+.dir_closed::before {
+	color: var(--directory-list-text-color); 
+	font-family: "Font Awesome 5 Free" !important; 
+	font-weight: 900 !important; 
+	content: "\f07b" !important;
+	/* 10px, and 2px for open dir  */
+	padding-right: calc(5px + 2px); /*for the icon*/
+}
+/* Add Icon for opened <ul> */
+.dir_open::before {
+	color: var(--directory-list-text-color);
+	font-family: "Font Awesome 5 Free" !important; 
+	font-weight: 900 !important; 
+	content: "\f07c" !important;
+	padding-right: 5px; /*for the icon*/
+}
+/* Control padding and margins for small screens */
+@media screen and (max-width: 1000px) { /* laptops */
+	.document_display_box { /* font-size: 24px; */ }
+	.dir_tree_box { line-height: 150%; min-width: 25%; max-width: 25%; padding:10px }
+	.dir_tree_box ul { /* font-size: 24px*/ }
+	.dir_tree_box ul::after{ margin-left: 50px; }
+	.dir_tree_box li { /* font-size: 24px  */ }
+}
+/* Highlight selected document */
+.selected_document {
+	font-weight:bold;
+}

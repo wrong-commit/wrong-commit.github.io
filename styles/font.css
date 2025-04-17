@@ -1,0 +1,74 @@
+/* Custom Icon Class Declarations */
+.email::before  {
+	color: var(--icon-color);
+	font-family: "Font Awesome 5 Free" !important; 
+	font-weight: 900; 
+	content: "\f1fa";
+	padding-right:5px; /*for the icon*/
+}
+.github::before {
+	color: var(--icon-color); 
+	font-family: "Font Awesome 5 Brands" !important;
+	font-weight: 900 !important;
+	content: "\f09b" !important ;
+	padding-right:5px; /*for the icon*/
+}
+
+/* Font styles */
+html { 
+  zoom: 80%;
+}
+.header {
+  color: var(--header-color);
+    font-family: "Space Grotesk", Roboto, sans-serif;
+    font-size: 2.2rem;
+    /* font-size: 20px; */
+    font-weight: bold;
+    text-transform: capitalize;
+}
+.text {
+  color: var(--text-color);
+  font-size: 1.3em;
+}
+.small_text {
+  font-size: 1.1em;
+}
+
+.text>a, a.text{ 
+  color: var(--text-color);
+}
+
+h2>a { 
+  color: var(--text-color);
+}
+
+  
+@media (max-width: 480px) {
+  html {
+      font-size: 14px;
+  }
+}
+
+@media (min-width: 480px) {
+  html {
+      font-size: 15px;
+  }
+}
+
+@media (min-width: 768px) {
+  html {
+      font-size: 16px;
+  }
+}
+
+@media (min-width: 992px) {
+  html {
+      font-size: 15px;
+  }
+}
+
+@media (min-width: 1200px) {
+  html {
+      font-size: 14px;
+  }
+}
