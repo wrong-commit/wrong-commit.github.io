@@ -1,0 +1,25 @@
+#full_page_img_container {
+    /* Default do not display */
+    display: none;
+    /* Position from 0,0 of current viewport, not document */
+    position: fixed;
+    /* Big z-index */
+    z-index: 9999;
+    /* Position 0,0 */
+    top: 0;
+    left: 0;
+    /* Full size of page. Do not use vw/vh */
+    width: 100%;
+    height: 100%;
+    /* Handle mismatched aspect ratios better */
+    background-size: contain;
+    background-repeat: no-repeat no-repeat;
+    background-position: center center;
+    background-color: rgba(0,0,0,0.8);
+    cursor: pointer;
+}
+
+/* Style for clickable image. Class used by img_viewer.js */
+.clickable_img { 
+    cursor: pointer;
+}

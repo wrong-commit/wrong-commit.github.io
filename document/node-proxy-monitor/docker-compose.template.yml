@@ -1,0 +1,63 @@
+version: '3'
+services:
+  # Generate SSL Certificates for Squid proxy
+  certs:
+    container_name: squid-certs
+    build:
+      context: . 
+      dockerfile: scripts/generate_certificates/Dockerfile 
+    volumes:
+      - sslcerts:/ssl
+  # Run the squid 4 proxy in URL rewriting mode
+  squid:
+    container_name: squid
+    restart: always
+    depends_on:
+      - certs
+    build: 
+      context: squid_files
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    volumes:
+      - sslcerts:/ssl
+      - js:/generated_js
+  # Node JS Application to respond with rewritten files and serving malicious content
+  nodeapp:
+    depends_on:
+      - certs
+      - squid
+      - mongodb
+    container_name: evil-server
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - MONGODB_URL=mongodb://squid-mongo:27017/proxy_tracker_TEST
+      - NODE_HTTP_PORT=80
+      - NODE_HTTPS_PORT=3000
+      - NODE_ADDRESS=0.0.0.0
+      - PUBLIC_IP=127.0.0.1
+    ports:
+      - '3000:3000'
+    volumes:
+      - sslcerts:/ssl
+      - js:/generated_js
+    networks:
+      - evil-js-proxy
+  # Mongo DB Service definition
+  mongodb:
+    container_name: squid-mongo
+    image: mongo:6-jammy
+    ports:
+      - '27017:27017'
+    volumes:
+      - dbdata6:/data/db
+    networks:
+      - evil-js-proxy
+volumes:
+  dbdata6:
+  sslcerts:
+  js:
+networks:
+  evil-js-proxy:

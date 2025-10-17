@@ -1,0 +1,7 @@
+NODE_HTTP_PORT=80
+NODE_HTTPS_PORT=80
+#open so files can be downloaded/api endpoints can be reached
+#limiting access to the proxy can be handled within squid_files/squid.conf
+NODE_ADDRESS=0.0.0.0
+#so that the generated malicious javascript can point to the write IP address
+CURRENT_IP=

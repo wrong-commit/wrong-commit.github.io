@@ -1,0 +1,112 @@
+<html>
+
+<head>
+    <title>blog | quinn's portfolio</title>
+    <link rel="stylesheet" href="/styles/colors_purple.css" />
+    <link rel="stylesheet" href="/styles/dir_box.css" />
+    <link rel="stylesheet" href="/styles/head.css" />
+    <link rel="stylesheet" href="/styles/font.css" />
+    <link rel="stylesheet" href="/styles/img_viewer.css" />
+    <!-- Font imports -->
+    <!-- Roboto -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <!-- Space Grotesk -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Fantasque Sans Mono';
+            src: url('/assets/Webfonts/FantasqueSansMono-Regular.eot');
+            /* IE 9 Compatibility Mode */
+            src: url('/assets/Webfonts/FantasqueSansMono-Regular.eot?#iefix') format('embedded-opentype'),
+                /* IE < 9 */
+                url('/assets/Webfonts/FantasqueSansMono-Regular.woff2') format('woff2'),
+                url('/assets/Webfonts/FantasqueSansMono-Regular.woff') format('woff'),
+                /* Firefox >= 3.6, any other modern browser */
+                url('/assets/Webfonts/FantasqueSansMono-Regular.ttf') format('truetype'),
+                /* Safari, Android, iOS */
+                url('/assets/Webfonts/FantasqueSansMono-Regular.svg#FantasqueSansMono-Regular') format('svg');
+            /* Chrome < 4, Legacy iOS */
+            font-weight: 400;
+            font-style: normal;
+        }
+    </style>
+
+    <!--Font awesome 5-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/solid.css"
+        integrity="sha384-osqezT+30O6N/vsMqwW8Ch6wKlMofqueuia2H7fePy42uC05rm1G+BUPSd2iBSJL" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/brands.css"
+        integrity="sha384-BCEeiNUiLzxxoeYaIu7jJqq0aVVz2O2Ig4WbWEmRQ2Dx/AAxNV1wMDBXyyrxw1Zd" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/fontawesome.css"
+        integrity="sha384-BzCy2fixOYd0HObpx3GMefNqdbA7Qjcc91RgYeDjrHTIEXqiF00jKvgQG0+zY/7I" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="box page_raised">
+            <div class="box line_box reverse">
+                <h2 class="header">
+                    <a href="/index.html"> &lt; Home</a></h2>
+                <div style="flex-grow: 1"></div>
+                <h2 class="header"></h2>
+            </div>
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box "  style="flex-direction:column; justify-content:flex-start">
+                <h2 class="header">2025-01 | Generate EBS Volume and Partition Information</h2>
+                <div class="box">
+                    <div class="column">
+                        <div style="margin-right: 1rem">
+                            <p class="text">
+                                AWS did not provide the ability to report the disk usage statistics in an easily consumable spreadsheet. 
+                                This could probably have been done with CloudWatch Metrics and SSM but this did not exist in my target environment 
+                            </p>
+                            <p class="text"> <br /> </p>
+                            <p class="text">
+                                This script utilizes the AWS CLI to generate a CSV that contains all the information needed to detect 
+                                EBS volumes that are under utilized.
+                            </p>
+                            <img class="img clickable_img page_raised" src="/imgs/dump_ebs_volumes.PNG"
+                            style="width: 90vw; height: auto" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box line_box" style="justify-content: center; margin-bottom: 20px">
+                <a href="https://github.com/wrong-commit/dump-aws-ebs-volumes-csv" 
+                    class="page_raised button text"> link: GitHub </a>
+            </div>
+        </div>
+        <!-- 
+        <div class="box page_raised">
+            <div class="box line_box" style="flex-direction:column; justify-content:flex-start">
+                <h2 class="header">2024-09 | Heroku Migration for Raine & Horne</h2>
+                <div class="box">
+                    <div class="column">
+                        <div style="margin-right: 1rem">
+                            <p class="text">
+                                As part of my DevOps role supporting Raine & Horne, I was responsible for migrating the legacy platform off of its current hosting platform Heroku.
+                            </p>
+                            <p class="text"> <br /> </p>
+                            <p class="text">
+                                This project saw me recreating the CI/CD pipeline for automated deploys in Github, 
+                                and deploying new assets under the customer's existing AWS accounts.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box line_box" style="justify-content: center; margin-bottom: 20px">
+                <a href="./digikit-migration.html" class="page_raised button text"> click to
+                    read </a>
+            </div>
+        </div>
+        -->
+    </div>
+    </div>
+    <div id="full_page_img_container" onclick="this.style.display='none';"></div>
+    <script src="/scripts/img_viewer.js"></script>
+</body>
+
+</html>

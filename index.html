@@ -1,0 +1,336 @@
+<html>
+
+<head>
+    <title>wrong-commit</title>
+    <link rel="stylesheet" href="/styles/colors.css" />
+    <link rel="stylesheet" href="/styles/dir_box.css" />
+    <link rel="stylesheet" href="/styles/head.css" />
+    <link rel="stylesheet" href="/styles/font.css" />
+    <link rel="stylesheet" href="/styles/img_viewer.css" />
+    <!-- Font imports -->
+    <!-- Roboto -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <!-- Space Grotesk -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Fantasque Sans Mono';
+            src: url('/assets/Webfonts/FantasqueSansMono-Regular.eot');
+            /* IE 9 Compatibility Mode */
+            src: url('/assets/Webfonts/FantasqueSansMono-Regular.eot?#iefix') format('embedded-opentype'),
+                /* IE < 9 */
+                url('/assets/Webfonts/FantasqueSansMono-Regular.woff2') format('woff2'),
+                url('/assets/Webfonts/FantasqueSansMono-Regular.woff') format('woff'),
+                /* Firefox >= 3.6, any other modern browser */
+                url('/assets/Webfonts/FantasqueSansMono-Regular.ttf') format('truetype'),
+                /* Safari, Android, iOS */
+                url('/assets/Webfonts/FantasqueSansMono-Regular.svg#FantasqueSansMono-Regular') format('svg');
+            /* Chrome < 4, Legacy iOS */
+            font-weight: 400;
+            font-style: normal;
+        }
+    </style>
+
+    <!--Font awesome 5-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/solid.css"
+        integrity="sha384-osqezT+30O6N/vsMqwW8Ch6wKlMofqueuia2H7fePy42uC05rm1G+BUPSd2iBSJL" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/brands.css"
+        integrity="sha384-BCEeiNUiLzxxoeYaIu7jJqq0aVVz2O2Ig4WbWEmRQ2Dx/AAxNV1wMDBXyyrxw1Zd" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/fontawesome.css"
+        integrity="sha384-BzCy2fixOYd0HObpx3GMefNqdbA7Qjcc91RgYeDjrHTIEXqiF00jKvgQG0+zY/7I" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="box page_raised">
+            <div class="box line_box reverse">
+                <div class="stacked">
+                    <h2 class="header">Oops, Something Went Wrong</h2>
+                    <h2 class="header">Oops, Something Went Wrong</h2>
+                    <h2 class="header">Oops, Something Went Wrong</h2>
+                    <h2 class="header">Oops, Something Went Wrong</h2>
+                    <h2 class="header">Oops, Something Went Wrong</h2>
+                </div>
+                <div style="flex-grow: 1"></div>
+                <h2 class="header">
+                    <a class="nav_link" href="/blogs.html">Random Work Stuff</a>
+                </h2>
+            </div>
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box" style="flex-direction:column; justify-content:flex-start; padding-bottom: 1rem;">
+                <div class="box">
+                    <p class="text">Welcome to this hacker's log. On the main page is where I show off some of my projects starting since my school days.</p>
+			    <ul id="table_of_contents" class="text" style="font-family: Space Grotesk;">
+                </ul>
+                </div>
+                <div class="box">
+                    <p class="text">You can find more things on my rarely updated <a class="nav_link" href="/blogs.html">work blog</a>, or on my GitHub
+		                <a target="_blank" href="https://github.com/wrong-commit/" class="github nav_link">wrong-commit</a>
+		            </p>
+		        </div>
+            </div>
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box">
+                <h2 class="header toc_item">April 2025 | Kafka and Microservices .... </h2>
+            </div>
+            <div class="box line_box">
+                <div class="box">
+                    <p class="text">
+                        In preparation for my new job, I decided to learn the technologies I'd be using 
+                        and build a useful application with Kafka message queues and a microservice architecture.  
+                    </p>
+                    <p class="text"> <br /> </p>
+                    <p class="text"> 
+                        The microservices were: 
+                        <ol class="text">
+                            <li>One container per coin to track the price every 5 seconds and pushes the new price to a Kafka message queue</li>
+                            <li>One container to consume each Kafka message and updates 2 MongoDB collections with current and historical price data</li>
+                            <li>An nginx container to serve static front-end assets, handwritten HTML because React was unnecessary</li>
+                            <li>One stateless, scalable, RESTful API container to handle front end requests</li>
+                        </ol>
+                    </p>
+                    <p class="text"> <br /> </p>
+                    <p class="text">
+                        The application has a some features: 
+                        <ol class="text">
+                            <li>View crypto prices tracked from multiple sources, as some coins cannot be tracked on all APIs</li>
+                            <li>Graph important trading periods against crypto price, with details of expected movements</li>
+                            <li>Track trades and view profit/loss for each asset</li>
+                        </ol>
+                    </p>
+                    <p class="text"> <br /> </p>
+                    <p class="text">
+                        Somethings could definitely be improved before this application would be production ready - 
+                        logging, monitoring, k8s, an authentication microservice, a microservice to send an alert when a coin reaches a certain price,
+                        loading historical data, etc
+                    </p>
+                    <img class="img clickable_img page_raised" src="/imgs/crypto_tracker_screenshot.PNG"
+                        style="width: 100%;" />
+                </div>
+            </div>
+            <div class="box line_box" style="justify-content: center">
+                <span repo="crypto_tracker_document" class="page_raised button text" onclick='toggleRepo(this);'> click to
+                    expand </span>
+            </div>
+            <div id='crypto_tracker_repo_code_box' class="box code_box collapsed" clicked="yes">
+                <ul id="crypto_tracker_repo" class="dir_tree_box"> </ul>
+                <xmp id="crypto_tracker_document" class="document_display_box"> </xmp>
+            </div>
+        </div>
+	    <div class="box page_raised">
+            <div class="box line_box">
+                <h2 class="header toc_item">January 2025 | Cattle, not pets. AWS Ansible Automation</h2>
+            </div>
+            <div class="box line_box">
+                <div class="box">
+                    <div class="column">
+                        <div style="margin-right: 1rem">
+                            <p class="text">
+			    	Using Ansible, AWS, and GitHub Actions, I have created a secure, automated deployment process for a
+				sample web application.
+                            </p>
+                            <p class="text"> <br /> </p>
+                            <p class="text">
+			    	The key highlights of this project are:
+                            </p>
+			    <ul class="text">
+				<li>Build a new AWS VM image when application or IaC code is updated</li>
+				<li>Automatically deploy to the UAT or PROD environments on successful builds</li>
+				<li>Utilise AWS autoscaling to implement 0 downtime updates to production</li>
+				<li>Secure deployment of resources in AWS using Secrets Manager and automated Security Group creation</li>
+				<li>Automated DB migrations on deploy</li>
+			    </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    	    <div class="box line_box" style="justify-content: center">
+                <span repo="ansible_document" class="page_raised button text" onclick='toggleRepo(this);'> click to
+                    expand </span>
+            </div>
+            <div id='ansible_repo_code_box' class="box code_box collapsed" clicked="yes">
+                <ul id="ansible_repo" class="dir_tree_box"> </ul>
+                <xmp id="ansible_document" class="document_display_box"> </xmp>
+	        </div> 
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box">
+                <h2 class="header toc_item">July 2022 | Australia Post parcel tracking dashboard</h2>
+            </div>
+            <div class="box line_box">
+                <div class="box">
+                    <div class="column">
+                        <div style="margin-right: 1rem">
+                            <p class="text">
+                                This product tracks Australia Post parcels using a React frontend and Typescript API backed by PostgreSQL. 
+                            </p>
+                            <p class="text"> <br /> </p>
+                            <p class="text">
+                                This project was an exercise in implementing an Object Relational Mapper (ORM) like Java's
+                                Hibernate in Typescript.
+                                The initial scope included reimplementing Hibernate's annotation based configuration to
+                                automatically generate JOIN statements in SQL queries.
+                            </p>
+                            <p class="text"> <br /> </p>
+                            <p class="text">
+                                The back end parcel tracking system uses a message queue for adding new parcels with a
+                                background cron service to provide
+                                regular synchronizations with the Auspost API for packge updates.
+                            </p>
+                            <p class="text"> <br /> </p>
+                            <p class="text">
+                                A notification script written in golang alerts the user whenever the package location
+                                changes.
+                            </p>
+                        </div>
+                        <img class="img clickable_img page_raised" src="/imgs/auspost_screenshot.PNG"
+                            style="width: 100%" />
+                    </div>
+                </div>
+            </div>
+            <div class="box line_box" style="justify-content: center">
+                <span repo="auspost_document" class="page_raised button text" onclick='toggleRepo(this);'> click to
+                    expand </span>
+            </div>
+            <div id='auspost_repo_code_box' class="box code_box collapsed" clicked="yes">
+                <ul id="auspost_repo" class="dir_tree_box"> </ul>
+                <xmp id="auspost_document" class="document_display_box"> </xmp>
+            </div>
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box">
+                <h2 class="header">2019 - 2024 | Employed as a fullstack dev working on FinTech automation...</h2>
+                <!-- <div style="flex-grow: 1"></div>
+                <h2 class="header">
+                    <a href="/blogs.html"> Link to Blog</a></h2> -->
+            </div>
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box" style="flex-direction:column">
+                <h2 class="header toc_item">October 2018 | Bypassing Anti-Virus Systems and Writing Malware</h2>
+                <div class="box">
+                    <p class="text">
+                        Anti Virus vendors run many types of scans against potentially malicious EXE files. Simple
+                        heuristic scans are not able adequately identify packed or encrypted malware.
+                    </p>
+                    <p class="text"> <br /> </p>
+                    <p class="text">
+                        I wrote this program in C using the Win32 API to bypass the static anaylsis performed by most
+                        anti-virus solutions (in addition to other more sophisticated techniques), and perform some example malware activities.
+                    </p>
+                    <p class="text"> <br /> </p>
+                    <p class="text">
+                        This program includes some checks for Anti Virus sandboxes, as well as wiping parts of the EXE
+                        from system memory, and then in-memory executing a downloaded process. 
+                    </p>
+                </div>
+            </div>
+            <div class="box line_box" style="justify-content: center">
+                <div repo="cryptor_document" class="page_raised button text" onclick='toggleRepo(this);'> click to
+                    expand </div>
+            </div>
+            <div id='cryptor_repo_code_box' class="box code_box collapsed" clicked="yes">
+                <ul id="cryptor_repo" class="dir_tree_box"> </ul>
+                <xmp id="cryptor_document" class="document_display_box"> </xmp>
+            </div>
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box">
+                <h2 class="header toc_item">2017 | Snooping SSL proxy that injects JS and steals credentials</h2>
+            </div>
+            <div class="box line_box" style="flex-direction:column;">
+                <div class="box">
+                    <p class="text">
+                        In this project I configured a HTTP proxy to generate bogus SSL certificates and inject JavaScript into any page visited by the proxy user. 
+                        The injected JavaScript would record all form data that was entered by the proxy user, such as username and passwords.
+                        A custom NodeJS Command and Control server was created to record all information entered on the web page.  
+                    </p>
+                    <p class="text"> <br /> </p>
+                    <p class="text">
+                        This project was inspired by
+                        <a target="_blank" class="nav_link"
+                            href="https://www.slideshare.net/chemai64/owning-bad-guys-and-mafia-with-javascript-botnets">a
+                            DEFCON 20 talk</a>. Using open source software, a malicious HTTP proxy intercepts SSL connections by generating SSL certificates 
+                            on the fly to inject Javascript into every website the user visits, stealing every entered username and password combo.
+                    </p>
+                    <p class="text"> <br /> </p>
+                    <p class="text">
+                        This demonstrates how off the shelf software can be used for intercepting SSL traffic and highjacking network traffic, but it is 
+                        limited in effect by not being able to generate real certificates on the fly. This is not necessarily a problem for a well resourced attacker.
+                    </p>
+                    <p class="text"> <br /> </p>
+                    <p class="text">
+                        A modern solution to this problem is to implement mitmproxy and a custom C&C server. 
+                    </p>
+                </div>
+            </div>
+            <div class="box line_box" style="justify-content: center">
+                <span repo="proxy_document" class="page_raised button text" onclick='toggleRepo(this);'> click to expand
+                </span>
+            </div>
+            <div id='proxy_repo_code_box' class="box code_box collapsed" clicked="yes">
+                <ul id="proxy_repo" class="dir_tree_box"> </ul>
+                <xmp id="proxy_document" class="document_display_box"> </xmp>
+            </div>
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box" style="flex-direction:column;">
+                <h2 class="header toc_item">2016 | Crashing Windows Vista/7/Server 2008 Computers</h2>
+                <div class="box">
+                    <p class="text">
+                        This script exploits
+                        <a target="_blank" class="nav_link"
+                            href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-4669">CVE-2010-4669</a>. 
+                    </p>
+                    <p class="text"> <br /> </p>
+                    <p class="text">
+                        This Denial of Service python script crafts IPv6 packges to crash vulnerable Windows Vista, 7, and Server 2008 computers.. 
+                        The victim computers CPU will reach 100% while the script is running. 
+                        Once the script is stopped the computers will slowly become available again, without a restart. 
+                    </p>
+                </div>
+            </div>
+            <div class="box line_box" style="justify-content: center">
+                <span repo="raflood_document" class="page_raised button text" onclick='toggleRepo(this);'> click to expand
+                </span>
+            </div>
+            <div id='raflood_repo_code_box' class="box code_box collapsed" clicked="yes">
+                <ul id="raflood_repo" class="dir_tree_box"> </ul>
+                <xmp id="raflood_document" class="document_display_box"> </xmp>
+            </div>
+        </div>
+    <br>
+    <br>
+    </div>
+    <div id="full_page_img_container" onclick="this.style.display='none';"></div>
+</body>
+<script src="/scripts/structure_builder.js"></script>
+<script src="/scripts/img_viewer.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {    
+        // Generate links for every .header
+        const toc = document.getElementById('table_of_contents')
+        const headers = document.getElementsByClassName('header toc_item')
+        Array.from(headers).forEach(h => {
+            const href = h.textContent
+            toc.insertAdjacentHTML('beforeend', `<li>
+                <a style="text-transform: capitalize;" class="nav_link" href="#header ${href}">${href}</a>
+            </li>`)
+            h.setAttribute(`id`, `header ${href}`)
+        })
+
+        // Initialize code repos
+        downloadRepo("ansible-aws-deployment","ansible_repo","ansible_document");
+        downloadRepo("AusPohzt","auspost_repo","auspost_document");
+        downloadRepo("cryptor-and-loader","cryptor_repo","cryptor_document");
+        downloadRepo("node-proxy-monitor","proxy_repo","proxy_document");
+        downloadRepo("CVE-2010-4669","raflood_repo","raflood_document");
+        downloadRepo("crypto_tracker","crypto_tracker_repo","crypto_tracker_document");
+    })
+</script>
+
+</html>
