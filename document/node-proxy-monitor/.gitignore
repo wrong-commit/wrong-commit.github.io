@@ -1,0 +1,4 @@
+node_modules/*
+public/js/*
+ssl/*
+docker-compose.yml

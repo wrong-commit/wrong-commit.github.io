@@ -1,0 +1,18 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "target": "ES5",
+        "module": "ES6",
+        "rootDir": "../",
+        "outDir": "lib",
+        /* Support JSX in FE package */
+        "jsx": "react",
+        "moduleResolution": "Node",
+        
+    },
+    "references": [
+        {
+            "path": "../backend/tsconfig.json"
+        }
+    ]
+}

@@ -1,0 +1,185 @@
+{
+  "root": [
+    {
+      "parent": "/",
+      "name": "models",
+      "type": "dir",
+      "children": [
+        {
+          "parent": "/models/",
+          "name": "formsubmit.js",
+          "type": "file"
+        },
+        {
+          "parent": "/models/",
+          "name": "pagevisit.js",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "parent": "/",
+      "name": "public",
+      "type": "dir",
+      "children": [
+        {
+          "parent": "/public/",
+          "name": "pagevisittest.html",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "parent": "/",
+      "name": "scripts",
+      "type": "dir",
+      "children": [
+        {
+          "parent": "/scripts/",
+          "name": "generate_certificates",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/scripts/generate_certificates/",
+              "name": "Dockerfile",
+              "type": "file"
+            },
+            {
+              "parent": "/scripts/generate_certificates/",
+              "name": "generate-certificate.sh",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "parent": "/",
+      "name": "squid_files",
+      "type": "dir",
+      "children": [
+        {
+          "parent": "/squid_files/",
+          "name": "Dockerfile",
+          "type": "file"
+        },
+        {
+          "parent": "/squid_files/",
+          "name": "getbash.sh",
+          "type": "file"
+        },
+        {
+          "parent": "/squid_files/",
+          "name": "rewrite.py",
+          "type": "file"
+        },
+        {
+          "parent": "/squid_files/",
+          "name": "run.sh",
+          "type": "file"
+        },
+        {
+          "parent": "/squid_files/",
+          "name": "squid.conf",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "parent": "/",
+      "name": "views",
+      "type": "dir",
+      "children": [
+        {
+          "parent": "/views/",
+          "name": "pages",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/views/pages/",
+              "name": "adminforms.ejs",
+              "type": "file"
+            },
+            {
+              "parent": "/views/pages/",
+              "name": "adminvisits.ejs",
+              "type": "file"
+            },
+            {
+              "parent": "/views/pages/",
+              "name": "adminvisitstable.ejs",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "parent": "/views/",
+          "name": "partials",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/views/partials/",
+              "name": "head.ejs",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "parent": "/",
+      "name": ".gitignore",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "build_and_run_docker.bat",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "docker-compose.template.yml",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "Dockerfile",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "env_template",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "malicious.ejs",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "package-lock.json",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "package.json",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "README.md",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "README2.md",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "server.js",
+      "type": "file"
+    }
+  ]
+}

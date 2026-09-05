@@ -1,0 +1,242 @@
+<html>
+
+<head>
+    <title>clustermap notification woes</title>
+    <link rel="stylesheet" href="/styles/colors_yellow.css" />
+    <link rel="stylesheet" href="/styles/dir_box.css" />
+    <link rel="stylesheet" href="/styles/head.css" />
+    <link rel="stylesheet" href="/styles/font.css" />
+    <!-- Font imports -->
+    <!-- Roboto -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <!-- Space Grotesk -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Fantasque Sans Mono';
+            src: url('/assets/Webfonts/FantasqueSansMono-Regular.eot');
+            /* IE 9 Compatibility Mode */
+            src: url('/assets/Webfonts/FantasqueSansMono-Regular.eot?#iefix') format('embedded-opentype'),
+                /* IE < 9 */
+                url('/assets/Webfonts/FantasqueSansMono-Regular.woff2') format('woff2'),
+                url('/assets/Webfonts/FantasqueSansMono-Regular.woff') format('woff'),
+                /* Firefox >= 3.6, any other modern browser */
+                url('/assets/Webfonts/FantasqueSansMono-Regular.ttf') format('truetype'),
+                /* Safari, Android, iOS */
+                url('/assets/Webfonts/FantasqueSansMono-Regular.svg#FantasqueSansMono-Regular') format('svg');
+            /* Chrome < 4, Legacy iOS */
+            font-weight: 400;
+            font-style: normal;
+        }
+    </style>
+
+    <!--Font awesome 5-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/solid.css"
+        integrity="sha384-osqezT+30O6N/vsMqwW8Ch6wKlMofqueuia2H7fePy42uC05rm1G+BUPSd2iBSJL" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/brands.css"
+        integrity="sha384-BCEeiNUiLzxxoeYaIu7jJqq0aVVz2O2Ig4WbWEmRQ2Dx/AAxNV1wMDBXyyrxw1Zd" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/fontawesome.css"
+        integrity="sha384-BzCy2fixOYd0HObpx3GMefNqdbA7Qjcc91RgYeDjrHTIEXqiF00jKvgQG0+zY/7I" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="box page_raised">
+            <div class="box line_box reverse">
+                <h2 class="header">2026-09 | Clustermap Notifications and the 30-Minute CPU Spike</h2>
+            </div>
+            <div class="box line_box" style="flex-direction:column; justify-content:flex-start;">
+                <div class="box">
+                    <p class="text">
+                        We observed a periodic CPU spike (roughly every 30 minutes) in services using this
+                        C++ DB connection client, the couchbase-cxx-client project. 
+                        The spike correlated with <code>enable_clustermap_notification=true</code> (the default).
+                        Setting <code>enable_clustermap_notification=false</code> eliminated the spike entirely. This
+                        document describes the mechanism behind the spike, why duplicate notifications were
+                        still expensive, and what the flag change actually does.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box" style="flex-direction:column">
+                <h2 class="header">Background: what enable_clustermap_notification does</h2>
+                <div class="box">
+                    <div class="column">
+                        <div style="margin-right: 1rem">
+                            <p class="text">
+                                When <code>enable_clustermap_notification=true</code> (the default, see
+                                <code>core/cluster_options.hxx</code>), the client negotiates two HELLO features with
+                                every KV node during session bootstrap (<code>core/io/mcbp_session.cxx</code>):
+                            </p>
+                            <p><br></p>
+                            <p class="text">
+                            <ul class="text">
+                                <li><code>clustermap_change_notification</code> — allows the server to <i>push</i>
+                                    configuration updates to the client at any time, as server-originated
+                                    <code>cluster_map_change_notification</code> messages, instead of the client having
+                                to poll for them.</li>
+                            </ul>
+                            </p>
+                            <p><br></p>
+                            <p class="text">
+                                With the feature negotiated, the server may asynchronously send each connected session a
+                                full bucket configuration whenever it believes the cluster map has changed.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box" style="flex-direction:column">
+                <h2 class="header">Why the CPU spiked every 30 minutes</h2>
+                <div class="box">
+                    <div class="column">
+                        <div style="margin-right: 1rem">
+                            <p class="text">
+                                In our environment the server pushed <code>cluster_map_change_notification</code>
+                                messages on a roughly 30-minute cadence. Each notification carries the <b>entire bucket
+                                    configuration as a JSON payload</b> (in our case ~74 KB per message — see the
+                                captured example in <code>core/impl/rev-6105839.json</code>).
+                            </p>
+                            <p><br></p>
+                            <p class="text">
+                                The cost is multiplied by connection count: the notification is delivered to <b>every
+                                    KV session</b> the client holds open (one per node, per bucket), and each session
+                                independently processes the message. So a single server-side event turns into N
+                                near-simultaneous JSON parse jobs on the client — a synchronized burst of work across
+                                the whole connection pool, which presents as a CPU spike rather than a steady load.
+                            </p>
+                            <p><br></p>
+                            <p class="text">
+                                <b>Open question:</b> we never determined <i>why</i> the server was sending these
+                                notifications every ~30 minutes. No topology change, rebalance, or failover was
+                                occurring during these config message spikes, and the configs pushed were duplicates of the revision the
+                                client already held. The trigger on the server side remains unexplained.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box" style="flex-direction:column">
+                <h2 class="header">Why parsing duplicate notifications was still expensive</h2>
+                <div class="box">
+                    <div class="column">
+                        <div style="margin-right: 1rem">
+                            <p class="text">
+                                The client does deduplicate incoming configs — but only <b>after</b> fully parsing them.
+                            </p>
+                            <p><br></p>
+                            <p class="text">
+                                On receipt of a notification (<code>core/io/mcbp_session.cxx</code>,
+                                <code>server_opcode::cluster_map_change_notification</code> handler), the session:
+                            </p>
+                            <p><br></p>
+                            <p class="text">
+                            <ol class="text">
+                                <li>Constructs a <code>cluster_map_change_notification_request_body</code> and calls
+                                    <code>req.body().config()</code>, which runs <code>utils::json::parse(...)</code>
+                                    over the full ~74 KB payload and materializes a complete
+                                    <code>topology::configuration</code> object (nodes, services, ports, and the full
+                                    vbucket map — 1024 entries with server lists).</li>
+                                <li>Only then calls <code>update_configuration()</code>, which compares the freshly
+                                    parsed config against the currently held one (<code>config == config_</code>) and
+                                    discards it if the revision is identical or older.</li>
+                            </ol>
+                            </p>
+                            <p><br></p>
+                            <p class="text">
+                                So for a duplicate notification, all of the expensive work — the JSON parse, the
+                                allocation and population of the configuration object, and a full structural equality
+                                comparison - has already been paid before the dedup check can throw the config away.
+                                The dedup check prevents <i>downstream</i> work (listener fan-out to the config tracker,
+                                bucket, HTTP session manager, tracer, meter, etc.), but it cannot prevent the parse
+                                itself, because the revision number needed for the comparison lives inside the JSON.
+                            </p>
+                            <p><br></p>
+                            <p class="text">
+                                Empirically, this parse-and-discard cycle was enough to produce the observed CPU spike
+                                when it fired across all sessions at once.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box" style="flex-direction:column">
+                <h2 class="header">Why enable_clustermap_notification=false fixed it</h2>
+                <div class="box">
+                    <div class="column">
+                        <div style="margin-right: 1rem">
+                            <p class="text">
+                                With the flag set to <code>false</code>:
+                            </p>
+                            <p><br></p>
+                            <p class="text">
+                            <ul class="text">
+                                <li>The HELLO negotiation never enables <code>clustermap_change_notification</code>, so
+                                    the server does not push these server-originated messages at all. The
+                                    parse-and-discard work simply never happens.</li>
+                                <li>The client still keeps its configuration fresh through the mechanisms that were
+                                    already in place:
+                                    <ul>
+                                        <li><b>Polling</b> — the config tracker / bucket periodically issue
+                                            <code>get_cluster_config</code> (GCCCP) requests (<code>poll_config</code> /
+                                            <code>fetch_config</code>), subject to <code>config_poll_interval</code> /
+                                            <code>config_poll_floor</code>.</li>
+                                        <li><b><code>not_my_vbucket</code> responses</b> — if the topology genuinely
+                                            changes, KV operations directed at the wrong node return
+                                            <code>not_my_vbucket</code> with the current config in the response payload,
+                                            which the client applies immediately.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            </p>
+                            <p><br></p>
+                            <p class="text">
+                                In other words, disabling push notifications trades a painfully noisy push
+                                channel for pull-based freshness, with no loss of correctness: genuine
+                                topology changes are still picked up quickly via <code>not_my_vbucket</code>, and routine
+                                freshness is covered by polling.
+                            </p>
+                            <p><br></p>
+                            <p class="text">
+                                <i>We never experienced any performance or behavioural issues with this latest
+                                    configuration</i>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box" style="flex-direction:column; justify-content:flex-start;">
+                <h2 class="header">Caveats / follow-ups</h2>
+                <div class="box">
+                    <p class="text">
+                    <ul class="text">
+                        <li>The root cause on the <b>server side</b> was never identified: we don't know why
+                            duplicate <code>cluster_map_change_notification</code> messages were being emitted every
+                            ~30 minutes when no cluster map change had occurred. If that behavior is understood
+                            (or fixed in a later server version), re-enabling notifications may be safe and
+                            would restore faster config propagation.</li>
+                        <li>A possible client-side improvement would be a cheap pre-parse guard — e.g. extracting
+                            just the <code>rev</code> field before committing to a full parse — so duplicate
+                            notifications can be discarded at near-zero cost.</li>
+                    </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+</body>
+
+</html>
