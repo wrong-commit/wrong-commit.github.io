@@ -1,0 +1,457 @@
+- assert:
+    that:
+    - aws_access_key != ""
+    - aws_secret_key != ""
+    # AWS Launch AMI 
+    - app_ami_id != ""
+    - ec2_size != ""
+    - name_prefix != "" 
+    - rds_size != ""
+    # DB secrets
+    - conf_db_port != ""
+    - conf_db_user != ""
+    - conf_db_pass != ""
+- name: Set AWS default varaibles
+  set_fact:
+    aws_region: ap-southeast-2
+    tag_ec2_instance_name: "{{ '%Y%m%d-%H%M%S' | strftime }}"
+    tag_db2_creation_time: "{{ '%Y%m%d-%H%M%S' | strftime }}"
+- name: Create VPC
+  include_role: 
+    name: create_app_vpc
+  vars:
+    # VPC Name
+    vpc_name: "{{ name_prefix }}-vpc"
+    # Internet Gateway Name
+    igw_name: "{{ name_prefix }}-igw"
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    # Values could be 
+    # 10.0.0.0/16
+    # 10.0.0.0/24
+    cidr_block: "10.0.0.0/16" 
+    # Subnet AZ
+    subnet_1_cidr_block: "10.0.0.0/20"
+    subnet_2_cidr_block: "10.0.16.0/20"
+    subnet_3_cidr_block: "10.0.32.0/20"
+    route_table_name: "{{ name_prefix }}-rtb-public"
+    # Route destination CIDR to global internet
+    destination_cidr_block: "0.0.0.0/0"
+- name: Create EC2 Security Group
+  amazon.aws.ec2_group:
+    name: "{{ name_prefix }}-ec2-sg"
+    description: "Security group for UAT EC2 servers"
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    vpc_id: "{{ pik_vpc_net_result.vpc.id }}"
+    rules:
+      # Allow global SSH
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+        group_desc: Allow global SSH access
+    rules_egress:
+      - proto: all
+        cidr_ip: 0.0.0.0/0
+        group_desc: Allow all traffic outbound
+    state: present
+  register: ec2_sg_result
+  tags: create_sg
+- name: Display EC2 SG details
+  debug:
+    msg: "EC2 Security Group ID: {{ ec2_sg_result.group_id }}"
+- name: Create ELB Security Group 
+  ec2_group:
+    name: "{{ name_prefix }}-elb-sg"
+    description: "Security group for UAT ELB"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    aws_region: "{{ aws_region }}"
+    vpc_id: "{{ pik_vpc_net_result.vpc.id }}"
+    rules:
+      # Global HTTP ingress 
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+        group_desc: Global HTTP traffic inbound
+      # Global HTTP ingress
+      - proto: tcp
+        from_port: 443
+        to_port: 443
+        cidr_ip: 0.0.0.0/0
+        group_desc: Global HTTPS traffic inbound
+    rules_egress:
+      # ELB access EC2 on to API
+      - proto: tcp
+        from_port: 4000
+        to_port: 4000
+        group_id: "{{ ec2_sg_result.group_id }}"
+        group_desc: ELB access EC2 API egress
+      # ELB access EC2 on to FE
+      - proto: tcp
+        from_port: 5000
+        to_port: 5000
+        group_id: "{{ ec2_sg_result.group_id }}"
+        group_desc: ELB access EC2 FE egress
+  register: elb_sg_result
+- name: Add ELB access to EC2 in SG rules
+  amazon.aws.ec2_group:
+    name: "{{ name_prefix }}-ec2-sg"
+    # Add rules, don't replaces
+    purge_rules: false
+    purge_rules_egress: false
+    description: "Security group for UAT EC2 servers"
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    vpc_id: "{{ pik_vpc_net_result.vpc.id }}"
+    rules:
+      - proto: tcp
+        from_port: 4000
+        to_port: 4000
+        group_id: "{{ elb_sg_result.group_id }}"
+        group_desc: ELB access to API
+      - proto: tcp
+        from_port: 5000
+        to_port: 5000
+        group_id: "{{ elb_sg_result.group_id }}"
+        group_desc: ELB access to FE
+    rules_egress:
+      - proto: all
+        cidr_ip: 0.0.0.0/0
+        group_desc: Allow all traffic outbound
+    state: present
+  register: ec2_sg_result
+- name: Display ELB SG details
+  debug:
+    msg: "ELB Security Group ID: {{ elb_sg_result.group_id }}"
+- name: Create RDS 
+  include_role:
+    name: create_rds 
+  vars: 
+    vpc_id: "{{ pik_vpc_net_result.vpc.id }}"
+    ec2_sg_id: "{{ ec2_sg_result.group_id }}"
+- name: RDS DNS Name
+  debug:
+    msg: "RDS DNS Name: {{ rds_result.endpoint.address }}" 
+- name: Create Secrets Manager 
+  include_role: 
+    name: create_secrets_manager
+  vars: 
+    secrets_name: "{{ name_prefix }}-sm-4"
+    conf_db_host: "{{ rds_result.endpoint.address }}"
+    # conf_db_port: "{{ conf_db_port }}"
+    # conf_db_user: "{{ conf_db_user }}"
+    # conf_db_pass: "{{ conf_db_pass }}"
+    conf_api_url: "http://{{ name_prefix }}-api.hunterorbit.com.au"
+- name: Create IAM roles 
+  include_role:
+    name: create_ec2_iam_role
+  vars:
+    iam_role_name: "{{ name_prefix }}-ec2-role"
+    secrets_manager_arn: "{{ secrets_result.secret.arn }}"
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+- name: DEBUG iam result 
+  debug: 
+    var: iam_ec2_role_result    
+- name: Create EC2 Key Pair
+  ec2_key:
+    name: "{{ name_prefix }}-keypair"
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"    
+  register: keypair_result
+- debug: 
+    var: keypair_result
+# Save key pair 
+- name: Display the private key (only if created)
+  debug:
+    msg: "{{ keypair_result.key.private_key | default('Key already exists, no private key returned.') }}"
+- name: Save private key to a file
+  copy:
+    content: "{{ keypair_result.key.private_key | default('') }}"
+    dest: "./pik-keypair.pem"
+    mode: '0400'
+  when: keypair_result.key.private_key is defined    
+- name: Create EC2 API Target Group 
+  community.aws.elb_target_group:
+    name: "{{ name_prefix }}-api-tg"
+    state: present
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    aws_region: "{{ aws_region }}"
+    # Per Instance Target 
+    target_type: instance
+    # Listen on HTTP only
+    protocol: http
+    port: 4000
+    # VPC 
+    vpc_id: "{{ pik_vpc_net_result.vpc.id }}"
+    # Health check configuration
+    health_check_protocol: http
+    health_check_path: /healthcheck
+    successful_response_codes: 200
+    # UAT 15, UAT 5
+    health_check_interval: 5
+    # UAT 3
+    health_check_timeout: 2
+    # UAT 4
+    healthy_threshold_count: 2
+    # UAT 3
+    unhealthy_threshold_count: 2
+  register: pik_elb_api_tg_result
+- debug:
+    var: pik_elb_api_tg_result
+- name: Create EC2 FE Target Group 
+  community.aws.elb_target_group:
+    name: "{{ name_prefix }}-fe-tg"
+    state: present
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    aws_region: "{{ aws_region }}"
+    # Per Instance Target 
+    target_type: instance
+    # Listen on HTTP only
+    protocol: http
+    port: 5000
+    # VPC 
+    vpc_id: "{{ pik_vpc_net_result.vpc.id }}"
+    # Health check configuration
+    health_check_protocol: http
+    health_check_path: /healthcheck
+    successful_response_codes: 200
+    # UAT 15, UAT 5
+    health_check_interval: 5
+    # UAT 3
+    health_check_timeout: 2
+    # UAT 4
+    healthy_threshold_count: 2
+    # UAT 3
+    unhealthy_threshold_count: 2
+  register: pik_elb_fe_tg_result
+- debug:
+    var: pik_elb_fe_tg_result
+- name: Create Server Load Balancer 
+  amazon.aws.elb_application_lb:
+    name: "{{ name_prefix }}-elb"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    aws_region: "{{ aws_region }}"
+    security_groups:
+      - "{{ elb_sg_result.group_id }}"
+    subnets:
+      - "{{ pik_subnet_1_result.subnet.id }}"
+      - "{{ pik_subnet_2_result.subnet.id }}"
+      - "{{ pik_subnet_3_result.subnet.id }}"
+    listeners:
+      - Protocol: HTTP # Required. The protocol for connections from clients to the load balancer (HTTP or HTTPS) (case-sensitive).
+        Port: 80 # Required. The port on which the load balancer is listening.
+        DefaultActions:
+          # TODO: Only forward traffic with specific Host header
+          - Type: fixed-response
+            FixedResponseConfig:
+              ContentType: "text/plain"
+              MessageBody: "No soup for you!"
+              StatusCode: "200"
+        Rules: 
+          # Forward API traffic
+          - Conditions:
+            - Field: host-header
+              Values: 
+                - "{{ name_prefix }}-api.hunterorbit.com.au"
+            Priority: 1
+            Actions:
+              - TargetGroupArn: "{{ pik_elb_api_tg_result.target_group_arn }}"
+                Type: forward
+          - Conditions:
+            - Field: host-header
+              Values: 
+                - "{{ name_prefix }}.hunterorbit.com.au"
+            Priority: 2
+            Actions:
+              - TargetGroupArn: "{{ pik_elb_fe_tg_result.target_group_arn }}"
+                Type: forward
+    state: present
+  register: pik_elb_result
+- debug: 
+    var: pik_elb_result
+# Create Launch Template for AMI
+- name: Create new Launch Template
+  amazon.aws.ec2_launch_template:
+    name: "{{ name_prefix }}-lt"
+    version_description: "Version using AMI {{ app_ami_id }}"
+    image_id: "{{ app_ami_id }}"
+    iam_instance_profile: "{{ iam_instance_profile_arn_result }}"
+    default_version: latest
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"    
+    key_name: "{{ name_prefix }}-keypair"
+    instance_type: "{{ ec2_size }}"
+    disable_api_termination: false
+    instance_initiated_shutdown_behavior: "stop"
+    metadata_options:
+      instance_metadata_tags: enabled
+    tag_specifications:
+      - tags:
+          Name: "{{ name_prefix }}-{{ tag_ec2_instance_name }}"
+          AWS_Secrets_Manager: "{{ name_prefix }}-sm"
+          Created: "{{ '%Y%m%d-%H%M%S' | strftime }}"
+          Service: Pikachu 
+          Environment: "{{ pik_env }}"
+          Owner: Ash Ketchum
+          Automation: Ansible
+          Source: https://github.com/wrong-commit/ansible-aws-deployment
+    # Assign network interface with EC2 SG 
+    network_interfaces:
+      - associate_public_ip_address: true
+        device_index: 0
+        groups: "{{ ec2_sg_result.group_id }}"
+        subnet_id: "{{ pik_subnet_1_result.subnet.id }}"
+  register: lt_result
+- debug:
+    var: lt_result.template
+# Create Auto Scaling group
+- name: Create Auto Scaling Group 
+  amazon.aws.autoscaling_group: 
+    name: "{{ name_prefix }}-asg"
+    launch_template:
+      version: "{{ lt_result.template.latest_version_number }}"
+      launch_template_id: "{{ lt_result.template.launch_template_id }}"
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"    
+    min_size: 1
+    max_size: 2
+    desired_capacity: 1
+    # Allow ASG to autoscale when ELB reports unhealthy target
+    # load_balancers: ["{{ name_prefix }}-elb"]
+    target_group_arns: 
+      - "{{ pik_elb_fe_tg_result.target_group_arn }}"
+      - "{{ pik_elb_api_tg_result.target_group_arn }}"
+    vpc_zone_identifier: 
+      - "{{ pik_subnet_1_result.subnet.id }}"
+      - "{{ pik_subnet_2_result.subnet.id }}"
+      - "{{ pik_subnet_3_result.subnet.id }}"
+    tags:
+      - Name: "{{ name_prefix }}-{{ tag_ec2_instance_name }}"
+      - AWS_Secrets_Manager: "{{ name_prefix }}-sm-4"
+      - Created: "{{ '%Y%m%d-%H%M%S' | strftime }}"
+      - Service: Pikachu 
+      - Environment: "{{ pik_env }}"
+      - Owner: Ash Ketchum
+      - Automation: Ansible
+      - Source: https://github.com/wrong-commit/ansible-aws-deployment
+  register: asg_result
+# Create rules for scaling up 
+- name: Create Scaling Policy for Scaling Up
+  ec2_scaling_policy:
+    state: present
+    name: "{{ name_prefix }}-scale-up-policy"
+    adjustment_type: ChangeInCapacity
+    scaling_adjustment: 1
+    asg_name: "{{ name_prefix }}-asg"
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"    
+  register: scale_up_result
+- name: Create CloudWatch Scale Up Alarm 
+  community.aws.ec2_metric_alarm:
+    state: present
+    name: "{{ name_prefix }}-scale-up-cpu-alarm"
+    metric: CPUUtilization
+    namespace: AWS/EC2
+    statistic: Average
+    comparison: GreaterThanOrEqualToThreshold
+    threshold: 80
+    period: 300
+    evaluation_periods: 2
+    dimensions:
+      AutoScalingGroupName: "{{ name_prefix }}-asg"
+    alarm_actions:
+      - "{{ scale_up_result.arn }}"
+    ok_actions: []
+    insufficient_data_actions: []
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"    
+# Create rules for scaling down 
+- name: Create Scaling Policy for Scaling Down
+  ec2_scaling_policy:
+    state: present
+    name: "{{ name_prefix }}-scale-down-policy"
+    adjustment_type: ChangeInCapacity
+    scaling_adjustment: -1
+    asg_name: "{{ name_prefix }}-asg"
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"    
+  register: scale_down_result
+- name: Create CloudWatch Scale Down Alarm 
+  community.aws.ec2_metric_alarm:
+    state: present
+    name: "{{ name_prefix }}-scale-down-cpu-alarm"
+    metric: CPUUtilization
+    namespace: AWS/EC2
+    statistic: Average
+    comparison: LessThanOrEqualToThreshold
+    threshold: 20
+    period: 300
+    evaluation_periods: 2
+    dimensions:
+      AutoScalingGroupName: "{{ name_prefix }}-asg"
+    alarm_actions:
+      - "{{ scale_down_result.arn }}" 
+    ok_actions: []
+    insufficient_data_actions: []
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"    
+- set_fact: 
+    unhealth_api_alarm_target_group: "{{ pik_elb_api_tg_result.target_group_arn | regex_search('(targetgroup/.+)', '\\1') | first }}"
+    unhealth_api_alarm_loadbalancer: "{{ pik_elb_result.load_balancer_arn | regex_search('(app/.+)', '\\1') | first }}"
+- debug: 
+    msg: "{{ unhealth_api_alarm_target_group }}:{{ unhealth_api_alarm_loadbalancer }}"
+- name: Create CloudWatch Unhealthy API Alarm
+  community.aws.ec2_metric_alarm:
+    state: present
+    name: "{{ name_prefix }}-unhealthy-api"
+    metric: UnhealthyStateRouting
+    namespace: AWS/ApplicationELB
+    statistic: Average
+    comparison: GreaterThanOrEqualToThreshold
+    # Trigger alarm when target group containers down container for longer than 30 seconds
+    threshold: 3
+    period: 30
+    evaluation_periods: 1
+    treat_missing_data: "notBreaching"
+    dimensions:
+      # "targetgroup/pik-uat-api-tg/3883d5c9648cccb7"
+      TargetGroup: "{{ unhealth_api_alarm_target_group }}"
+      # "app/pik-uat-elb/fe5793dead1bf801"
+      LoadBalancer: "{{ unhealth_api_alarm_loadbalancer }}"
+    # alarm_actions:
+    #   - "{{ scale_down_result.arn }}" 
+    ok_actions: []
+    insufficient_data_actions: []
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"    
+- name: Start ASG refresh
+  shell: | 
+    aws autoscaling start-instance-refresh --auto-scaling-group-name "{{ name_prefix }}-asg" --preferences '{"AutoRollback": true}' --desired-configuration '{"LaunchTemplate": {"LaunchTemplateName": "{{ lt_result.template.launch_template_name }}", "Version": "{{ lt_result.template.latest_version_number }}"}}'
+  # shell: | 
+  #   aws autoscaling start-instance-refresh --auto-scaling-group-name "{{ name_prefix }}-asg" --preferences '{"AutoRollback": true, "AlarmSpecification": {"Alarms": [ "{{ name_prefix }}-unhealthy-api" ] }}' --desired-configuration '{"LaunchTemplate": {"LaunchTemplateName": "{{ lt_result.template.launch_template_name }}", "Version": "{{ lt_result.template.latest_version_number }}"}}'
+  environment:
+    AWS_ACCESS_KEY_ID: "{{ aws_access_key }}"
+    AWS_SECRET_ACCESS_KEY: "{{ aws_secret_key }}"
+    AWS_DEFAULT_REGION: "{{ aws_region }}"
+  register: refresh_result
+- debug: 
+    var: refresh_result.stdout

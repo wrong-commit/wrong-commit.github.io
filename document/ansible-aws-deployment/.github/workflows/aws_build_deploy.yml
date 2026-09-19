@@ -1,0 +1,96 @@
+# This is a basic workflow to build a new EC2 AMI for a given branch
+name: AWS Build and Deploy
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "master", "dev" ]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    name: Test running Ansible playbooks 
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name }}
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+      # Install latest version of Ansible
+      - name: Install Ansible
+        shell: bash
+        run: |
+          sudo apt update
+          sudo apt install -y ansible
+      # Install boto3 and botocore dependencies when using the local act workflow runner
+      - name: ACT - Install boto dependencies 
+        # Only run when act is running the build
+        if: ${{ github.event.act }}
+        run: |
+          sudo apt install -y python3-boto3 python3-botocore
+      # Install Ansible AWS Module Depdencies
+      - name: GH - Install dependencies for Ansible which runs in venv
+        # Only run when act runner is present
+        if: ${{ !github.event.act }}
+        run: |
+          # Only run if venv exists 
+          if [[ -f "/opt/pipx/venvs/ansible-core/bin/activate" ]]; then  
+            # Enter venv
+            source /opt/pipx/venvs/ansible-core/bin/activate
+            # Install python modules in Ansible venv
+            python -m pip install boto3 botocore
+          fi
+          # Install boto here because bugs galore
+          python -m pip install boto3 botocore
+      # Install Ansible AWS Collection
+      - name: Install Ansible Modules
+        run: ansible-galaxy install -r requirements.yml
+      # Install AWS CLI to drop down to CLI when necessary
+      # - name: Install AWS CLI 
+      #   run: |
+      #     # Install awscli dependencies 
+      #     sudo apt-get install -y curl unzip gpg jq
+      #     # Download zip  
+      #     curl -o "awscliv2.zip" "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+      #     # Disable signature checks, cannot get gpg to import public-awscli.pem 
+      #       # Download signature 
+      #       # curl -o awscliv2.sig https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip.sig
+      #       # Save AWS public key into GPG for signature verification
+      #       # cat public-awscli.pem | tr -d '\n'
+      #       # gpg --import public-awscli.pem
+      #       # Verify downloaded package 
+      #       # gpg --verify awscliv2.sig awscliv2.zip
+      #     unzip -qq awscliv2.zip
+      #     sudo ./aws/install
+      #     aws --version
+      # Syntax check Ansible playbook
+      - name: Syntax Check Ansible 
+        working-directory: ./playbooks
+        run: |
+          ansible-playbook --syntax-check main_build_latest_ami_and_deploy.yml 
+      # # Run Ansible playbook to build Security Group
+      # - name: Ansible - Build AMI 
+      #   working-directory: ./playbooks        
+      #   # Uses secrets AWS_ACCESS_KEY, AWS_SECRET_KEY
+      #   run: |
+      #     ansible-playbook main_build_latest_ami.yml --extra-vars "aws_access_key=${{ secrets.AWS_ACCESS_KEY }} aws_secret_key=${{ secrets.AWS_SECRET_KEY }} app_git_repo=${{ env.APP_GIT_REPO }} app_git_branch=${{ env.APP_GIT_BRANCH }}"
+      # - name: Ansible - Deploy AMI to UAT 
+      #   working-directory: ./playbooks
+      #   run: |
+      #     ansible-playbook main_deploy_into_uat.yml --extra-vars "aws_access_key=${{ secrets.AWS_ACCESS_KEY }} aws_secret_key=${{ secrets.AWS_SECRET_KEY }} app_ami_id=ami-0f8e9769352fbd94a conf_db_port=${{ env.CONF_DB_PORT }} conf_db_user=${{ env.CONF_DB_USER }} conf_db_pass=${{ secrets.CONF_DB_PASS }}"
+      
+      - name: Ansible - Deploy AMI to UAT 
+        working-directory: ./playbooks
+        run: |
+          ansible-playbook main_build_latest_ami_and_deploy.yml --extra-vars "pik_env=${{ vars.APP_ENV }} aws_access_key=${{ secrets.AWS_ACCESS_KEY }} aws_secret_key=${{ secrets.AWS_SECRET_KEY }} app_git_repo=${{ vars.APP_GIT_REPO }} conf_db_user=${{ secrets.CONF_DB_USER }} conf_db_pass=${{ secrets.CONF_DB_PASS }}"
+      # Store generated keypair in Github Actions storage when created by Ansible first time
+      # - name: Archive production artifacts
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: pik-server-ec2
+      #     path: |
+      #       pik-keypair.pem

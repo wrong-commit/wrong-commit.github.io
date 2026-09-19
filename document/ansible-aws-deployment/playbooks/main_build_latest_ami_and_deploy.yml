@@ -1,0 +1,130 @@
+- name: Build EC2 Instance and deploy 
+  hosts: localhost
+  gather_facts: false
+  vars:
+    # t2.small for building node JS applications and docker files 
+    pik_build_server_size: t2.small
+    pik_env: UAT # UAT/PROD
+    hostenvs:
+      UAT: 
+        ec2_size: t2.micro
+        name_prefix: pik-uat
+        rds_size: db.t3.micro
+        app_build_branch: dev
+      PROD: 
+        ec2_size: t2.micro
+        name_prefix: pik-prod
+        rds_size: db.t3.micro
+        app_build_branch: master
+    app_build_branch: "{{ hostenvs[pik_env].app_build_branch }}"
+    ec2_size: "{{ hostenvs[pik_env].ec2_size }}"
+    name_prefix: "{{ hostenvs[pik_env].name_prefix }}"
+    build_name_prefix: "pik-build-{{ pik_env }}"
+    rds_size: "{{ hostenvs[pik_env].rds_size }}"
+    conf_db_port: 5432
+  # Secrets Manager to store runtime application secrets
+  # IAM role and policy to access secrets
+  # Creates VPC 
+  # 2 security groups for ELB to EC2 connection
+  # EC2 Key Pair 
+  # Generate EC2 Build Image Server
+  # Generates AMI from EC2 Image 
+  # Deletes Build Server
+  # Deploys AMI to UAT or PROD environment
+  # Configure live load balancers and auto scaling rules
+  tasks: 
+    - assert:
+        that:
+        - pik_env != ""
+        - aws_access_key != ""
+        - aws_secret_key != ""
+        - app_git_repo != ""
+        - app_build_branch != ""
+        - conf_db_port != ""
+        - conf_db_user != ""
+        - conf_db_pass != ""
+    - name: Set AWS default varaibles
+      set_fact:
+        aws_region: ap-southeast-2
+        tag_ec2_creation_time: "{{ '%Y%m%d-%H%M%S' | strftime }}"
+    - name: Create VPC
+      include_role: 
+        name: create_app_vpc
+      vars:
+        # VPC Name
+        vpc_name: "{{ build_name_prefix }}-vpc"
+        # Internet Gateway Name
+        igw_name: "{{ build_name_prefix }}-igw"
+        region: "{{ aws_region }}"
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        # Values could be 
+        # 10.0.0.0/16
+        # 10.0.0.0/24
+        cidr_block: "10.0.0.0/16" 
+        # Subnet AZ
+        subnet_1_cidr_block: "10.0.0.0/20"
+        subnet_2_cidr_block: "10.0.16.0/20"
+        subnet_3_cidr_block: "10.0.32.0/20"
+        route_table_name: "{{ build_name_prefix }}-rtb-public"
+        # Route destination CIDR to global internet
+        destination_cidr_block: "0.0.0.0/0"
+    - name: Create build server EC2 security group 
+      include_role: 
+        name: create_security_group
+      vars: 
+        region: "{{ aws_region }}"
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        name_prefix: "{{ build_name_prefix }}"
+    # Provision build server RDS instance 
+    - name: Create build server RDS 
+      include_role:
+        name: create_rds 
+      vars: 
+        vpc_id: "{{ pik_vpc_net_result.vpc.id }}"
+        ec2_sg_id: "{{ ec2_sg_result.group_id }}"
+        name_prefix: "{{ build_name_prefix }}"
+    # Populate build server secrets manager 
+    - name: Create Build Secrets Manager 
+      include_role: 
+        name: create_secrets_manager
+      vars: 
+        secrets_name: "{{ build_name_prefix }}-sm-4"
+        # The only reason we pass in secrets to this playbook is so the build script can generate a valid build script to uat.
+        # Now this is done, we can fill this in with dummy values and clean up the GHA further. 
+        conf_db_host: "{{ rds_result.endpoint.address }}"
+        conf_db_user: build-dummy
+        conf_db_pass: build-dummy-pass
+        conf_api_url: "http://{{ build_name_prefix }}-api.hunterorbit.com.au"
+    - name: Generate EC2 AMI
+      include_role: 
+        name: build_image_server
+      vars:
+        name_prefix: "{{ build_name_prefix }}"
+        region: "{{ aws_region }}"
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        app_git_repo: "{{ app_git_repo }}"
+        app_git_branch: "{{ app_build_branch }}"
+        ec2_size: "{{ pik_build_server_size }}"
+        rds_size: db.t3.micro
+        secret_manager_arn: "{{ secrets_result.secret.arn }}"
+        secret_manager_name: "{{ build_name_prefix }}-sm-4"
+    - name: Debug AMI result 
+      debug: 
+        var: pik_ami_result
+    - name: Deploy UAT environment
+      include_role: 
+        name: deploy_uat_or_prod
+      vars:
+        app_ami_id: "{{ pik_ami_result.image_id }}"
+        # name_prefix: "{{ name_prefix }}"
+        region: "{{ aws_region }}"
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        # ec2_size: "{{ ec2_size }}"
+        # rds_size: db.t3.micro
+        # conf_db_port: 5432
+        # conf_db_user: dummy
+        # conf_db_pass: dummypassword
