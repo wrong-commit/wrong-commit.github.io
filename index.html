@@ -1,0 +1,569 @@
+<html>
+
+<head>
+    <title>wrong-commit</title>
+    <!-- Main stylesheet for applying themes dynamically -->
+    <link id="theme" rel="stylesheet" />
+    <!-- Main site content stylesheets -->
+    <link rel="stylesheet" href="/styles/dir_box.css" />
+    <link rel="stylesheet" href="/styles/head.css" />
+    <link rel="stylesheet" href="/styles/font.css" />
+    <link rel="stylesheet" href="/styles/img_viewer.css" />
+    <link rel="stylesheet" href="/styles/fire.css" />
+    <!-- Preload all theme stylesheets -->
+    <link rel="preload" href="/styles/colors_purple.css" as="style">
+    <link rel="preload" href="/styles/colors_blue.css" as="style">
+    <link rel="preload" href="/styles/colors_teal.css" as="style">
+    <link rel="preload" href="/styles/colors_evil.css" as="style">
+    <link rel="preload" href="/styles/colors_yellow.css" as="style">
+    <link rel="preload" href="/styles/colors_hacker.css" as="style">
+    <link rel="preload" href="/styles/colors_white.css" as="style">
+    <!-- Font imports -->
+    <!-- Roboto -->
+    <!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> -->
+    <!-- Space Grotesk -->
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet"> -->
+    <!-- <style>
+        @font-face {
+            font-family: 'Fantasque Sans Mono';
+            src: url('/assets/Webfonts/FantasqueSansMono-Regular.eot');
+            /* IE 9 Compatibility Mode */
+            src: url('/assets/Webfonts/FantasqueSansMono-Regular.eot?#iefix') format('embedded-opentype'),
+                /* IE < 9 */
+                url('/assets/Webfonts/FantasqueSansMono-Regular.woff2') format('woff2'),
+                url('/assets/Webfonts/FantasqueSansMono-Regular.woff') format('woff'),
+                /* Firefox >= 3.6, any other modern browser */
+                url('/assets/Webfonts/FantasqueSansMono-Regular.ttf') format('truetype'),
+                /* Safari, Android, iOS */
+                url('/assets/Webfonts/FantasqueSansMono-Regular.svg#FantasqueSansMono-Regular') format('svg');
+            /* Chrome < 4, Legacy iOS */
+            font-weight: 400;
+            font-style: normal;
+        }
+    </style> -->
+
+    <!--Font awesome 5-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/solid.css"
+        integrity="sha384-osqezT+30O6N/vsMqwW8Ch6wKlMofqueuia2H7fePy42uC05rm1G+BUPSd2iBSJL" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/brands.css"
+        integrity="sha384-BCEeiNUiLzxxoeYaIu7jJqq0aVVz2O2Ig4WbWEmRQ2Dx/AAxNV1wMDBXyyrxw1Zd" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/fontawesome.css"
+        integrity="sha384-BzCy2fixOYd0HObpx3GMefNqdbA7Qjcc91RgYeDjrHTIEXqiF00jKvgQG0+zY/7I" crossorigin="anonymous">
+</head>
+
+<body style="display: none">
+    <div class="wrapper">
+        <div class="box page_raised">
+            <div class="box line_box reverse">
+                <div class="stacked">
+                    <h2 class="header" style="opacity: 0.15; z-index: 0">Oops, Something Went Wrong</h2>
+                    <h2 class="header" style="opacity: 0.30; z-index: 1">Oops, Something Went Wrong</h2>
+                    <h2 class="header" style="opacity: 0.55; z-index: 2">Oops, Something Went Wrong</h2>
+                    <h2 class="header" style="opacity: 0.70; z-index: 3">Oops, Something Went Wrong</h2>
+                    <h2 class="header" style="opacity: 0.85; z-index: 4">Oops, Something Went Wrong</h2>
+                    <h2 class="header" style="opacity: 1.00; z-index: 5">Oops, Something Went Wrong</h2>
+                </div>
+                <div style="flex-grow: 1"></div>
+                <h2 class="header">
+                    <a class="nav_link" href="/blogs.html">Work Blog></a>
+                </h2>
+            </div>
+            <div class="box line_box"
+                style="flex-direction:column; justify-content:flex-start; padding-bottom: 1rem;">
+                <div class="box">
+                    <p class="text">Welcome to this hacker's blog. On this main page I show off some of my various
+                        projects.</p>
+                    <ul id="table_of_contents" class="text" style="font-family: Space Grotesk;">
+                    </ul>
+                </div>
+                <div class="box">
+                    <p class="text">You can find more things on my rarely updated <a class="nav_link"
+                            href="/blogs.html">work blog</a>, or on my GitHub
+                        <a target="_blank" href="https://github.com/wrong-commit/"
+                            class="github nav_link">wrong-commit</a>
+                    </p>
+                    <!-- <p class="text"> <br /> </p> -->
+                    <div class="box line_box" style="justify-content: center">
+                        <span class="page_raised button text" onclick='switchTheme();'> click to
+                            switch theme
+                        </span>
+                    </div>
+                    <!-- <p class="text"> -->
+                    <!-- <button onclick="switchTheme()">Switch theme</button> -->
+                    <!-- </p> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="box page_raised">
+            <div class="box line_box">
+                <h2 class="header toc_item">September 2026 | LLM Automated Video Game Hacking </h2>
+            </div>
+            <div class="box line_box">
+                <div class="box">
+                    <h3 class="header" style="margin-top: 0; margin-bottom: 0">LLM Video Game Hacking</h3>
+                    <p class="text">
+                        skid_factory is a TypeScript video game reverse engineering LLM agent harness.
+                        Using a Cheat Engine MCP server, this harness is capable of autonomously detecting base
+                        module
+                        offsets for different data types that persists across reboots. Tooling is provided to
+                        manually
+                        overwrite these base addresses using the `write_memory` command. altogether, this allows
+                        for
+                        an agent to create a primitive video game hack.
+                    </p>
+                    <p class="text"> <br /> </p>
+                    <p class="text">
+                        The LLM Agent loop is the real power house. LLMs handle parsing disassembled ASM, recording
+                        CPU
+                        Registers when writing to specific memory addresses,
+                        and tracing pointer chains to find the final value in memory. Using a basic while loop with
+                        exposed custom commands, it is
+                        possible
+                        to orchestrate the agent into performing advanced reverse engineering and debugging
+                        capabilities
+                        with “good enough” reasoning.
+                    </p>
+                    <p class="text"> <br /> </p>
+                    <p class="text">
+                        To date, this method has generated both a HP and primary ammo cheats in the indie
+                        game NOT A HERO.
+                    </p>
+                    <p class="text"> <br /> </p>
+                    <p class="text">
+                        Later stages of this project could auto generate C/golang code to overwrite these found
+                        memory
+                        addresses based on keybindings. That would allow this
+                        application to turn into a standalone video game cheating factory, generating complete video
+                        game hacks autonomously across
+                        different architectures. However that is an exercise for another day.
+                    </p>
+                    <h3 class="header" style="margin-bottom: 0">CLI Commands</h3>
+                    <ol class="text">
+                        <li>advise - use the LLM loop to determine the next commands and then execute them</li>
+                        <li>scan - use CE to filter memory addresses by value</li>
+                        <li>reset_scan - reset scan state </li>
+                        <li>monitor_writes - use hardware breakpoints to record the CPU registers and determine the
+                            instruction pointer address.
+                        </li>
+                        <li>disassemble - dump ASM and surrounding context of any executable memory address</li>
+                        <li>resolve_base_address - for any base address and pointer chain, resolve the final value
+                            in
+                            memory</li>
+                        <li>write_memory - write memory of any value type into a given memory address, the ultimate point of this hack</li>
+                    </ol>
+                    <h3 class="header" style="margin-bottom: 0">Hardware Breakpoints</h3>
+                    <p class="text">
+                        Using Lua that is executed in Cheat Engine through the MCP server, it is possible to
+                        register
+                        hardware breakpoints that trigger when a memory address is written to. By inspecting the CPU
+                        registers at
+                        the time, specifically the RIP register, we can determine the ASM opcode that wrote to the
+                        memory address.
+                        By recording this RIP value and all other registers for a period of time while an event in
+                        the game occurs,
+                        like losing HP, we can dump the relevant ASM and CPU registers of the code responsible for updating our pointer value.
+                        This allows the user/agent to determine the next step in resolving the base address of the
+                        pointer chain.
+                    </p>
+                    <h3 class="header" style="margin-bottom: 0">The Agent Loop</h3>
+                    <p class="text">
+                        The agent has full access to the current applications command calls and outputs. A new agent
+                        instance is spun
+                        up on each request with the complete transcript of the following command input/output and
+                        optional question for the LLM.
+                    </p>
+                    <h3 class="header" style="margin-bottom: 0">Loop Command Queuing</h3>
+                    <p class="text">
+                        The agent prints out future commands when a step or reasoning completes, which is then
+                        parsed by
+                        the harness from
+                        the agent response. These commands, based on category, are either run directly or promoted
+                        for
+                        the user - most commands
+                        run after prompting Yes or No. This even allows for the LLM to prompt the user to perform an
+                        operation in the game to
+                        alter the game state, allowing us to filter out false positive memory addresses when tracing
+                        the
+                        base pointer.
+                    </p>
+                    <h3 class="header" style="margin-bottom: 0">Bypassing LLM Guard Rails</h3>
+                    <p class="text">
+                        The command printing -> parsing loop allows for a completely autonomous reverse engineering
+                        loop.
+                        Importantly for bypassing any restrictions, <strong>the LLM has not been explicitly told it
+                            runs in a loop.</strong>
+                        Providing a prompt that clarifies
+                        we’re in a loop triggers the guard rails and stops execution. See
+                        `src\advise\build_prompt.ts` for prompt details, including
+                        a snippet of the prompt that triggers the guard rails.
+                    </p>
+                    <p class="text"> <br /> </p>
+                    <p class="text">
+                        Up until the assisted agent debugging loop was added, the agent (Cursor Pro 2026 September
+                        Auto mode) was
+                        happy to support development of this application,
+                        even though the eventual goal of automated hacking was described transparently in the
+                        README. This means this harness, when running
+                        in automatic hacking mode, bypasses intended limitations in the model <em>by not telling the
+                            model it runs
+                            in a loop, but implying such by providing past transcripts and command invocations of
+                            previous agent calls.</em>
+                        It seems the model guardrails trigger based on user prompts, rather than what the agent is
+                        able to infer about the provided task.
+                        This seems to match what we've seen with "rogue" agents in big labs leaking out to the
+                        public internet and "hacking" into government/business networks,
+                        even though they are instructed not to do so but decide to after internal reasoning that
+                        skips the safety checks.
+                    </p>
+                    <p class="text"> <br /> </p>
+                    <img class="img clickable_img page_raised" src="/imgs/llm_video_game_hacking.jpg"
+                        style="width: 100%;" />
+                </div>
+            </div>
+            <div class="box line_box" style="justify-content: center">
+                <div class="box line_box" style="justify-content: center; margin-bottom: 20px">
+                    <a href="https://github.com/wrong-commit/skid_factory" class="page_raised button text"> link:
+                        GitHub </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="box page_raised">
+            <div class="box line_box">
+                <h2 class="header toc_item">April 2025 | Kafka and Microservices .... </h2>
+            </div>
+            <div class="box line_box">
+                <div class="box">
+                    <p class="text">
+                        In preparation for my new job, I decided to reinforce my understanding of the technologies
+                        I'd be using
+                        and build a useful application with Kafka message queues and a microservice architecture
+                        from the ground up.
+                    </p>
+                    <p class="text">
+                        The microservices were:
+                    <ol class="text">
+                        <li>One container per coin to track the price every 5 seconds and pushes the new price to a
+                            Kafka message queue</li>
+                        <li>One container to consume each Kafka message and updates 2 MongoDB collections with
+                            current
+                            and historical price data</li>
+                        <li>An nginx container to serve static front-end assets, handwritten HTML because React was
+                            unnecessary</li>
+                        <li>One stateless, scalable, RESTful API container to handle front end requests</li>
+                    </ol>
+                    </p>
+                    <p class="text">
+                        The application has somefeatures:
+                    <ol class="text">
+                        <li>View crypto prices tracked from multiple sources, as some coins cannot be tracked on all
+                            APIs</li>
+                        <li>Graph important trading periods against crypto price, with details of expected movements
+                        </li>
+                        <li>Track trades and view profit/loss for each asset</li>
+                    </ol>
+                    </p>
+                    <p class="text">
+                        Some things could definitely be improved before this application would be production ready -
+                        logging, monitoring, k8s, an authentication microservice, a microservice to send an alert
+                        when a
+                        coin reaches a certain price,
+                        loading historical data, etc
+                    </p>
+                    <img class="img clickable_img page_raised" src="/imgs/crypto_tracker_screenshot.PNG"
+                        style="width: 100%;" />
+                </div>
+            </div>
+            <div class="box line_box" style="justify-content: center">
+                <span repo="crypto_tracker_document" class="page_raised button text" onclick='toggleRepo(this);'>
+                    click
+                    to
+                    expand </span>
+            </div>
+            <div id='crypto_tracker_repo_code_box' class="box code_box collapsed" clicked="yes">
+                <ul id="crypto_tracker_repo" class="dir_tree_box"> </ul>
+                <xmp id="crypto_tracker_document" class="document_display_box"> </xmp>
+                <!-- <div class="box line_box" style="justify-content: center; margin-bottom: 20px">
+            <a href="https://github.com/wrong-commit/kafka-crypto-price-tracker" 
+                class="page_raised button text"> link: GitHub </a>
+        </div> -->
+            </div>
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box">
+                <h2 class="header toc_item">January 2025 | Cattle, not pets. AWS Ansible Automation</h2>
+            </div>
+            <div class="box line_box">
+                <div class="box">
+                    <div class="column">
+                        <div style="margin-right: 1rem">
+                            <p class="text">
+                                Using Ansible, AWS, and GitHub Actions, I have created a secure, automated
+                                deployment
+                                process for a
+                                sample web application.
+                            </p>
+                            <p class="text">
+                                The key highlights of this project are:
+                            </p>
+                            <ul class="text">
+                                <li>Build a new AWS VM image when application or IaC code is updated</li>
+                                <li>Automatically deploy to the UAT or PROD environments on successful builds</li>
+                                <li>Utilise AWS autoscaling to implement 0 downtime updates to production</li>
+                                <li>Secure deployment of resources in AWS using Secrets Manager and automated
+                                    Security
+                                    Group creation</li>
+                                <li>Automated DB migrations on deploy</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box line_box" style="justify-content: center; margin-bottom: 20px">
+                <a href="https://github.com/wrong-commit/ansible-aws-deployment" class="page_raised button text">
+                    link:
+                    GitHub </a>
+            </div>
+            <!-- <div class="box line_box" style="justify-content: center">
+            <span repo="ansible_document" class="page_raised button text" onclick='toggleRepo(this);'> click to
+                expand </span>
+        </div>
+        <div id='ansible_repo_code_box' class="box code_box collapsed" clicked="yes">
+            <ul id="ansible_repo" class="dir_tree_box"> </ul>
+            <xmp id="ansible_document" class="document_display_box"> </xmp>
+        </div>  -->
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box">
+                <h2 class="header toc_item">July 2022 | Australia Post parcel tracking dashboard</h2>
+            </div>
+            <div class="box line_box">
+                <div class="box">
+                    <div class="column">
+                        <div style="margin-right: 1rem">
+                            <p class="text">
+                                This product tracks Australia Post parcels using a React frontend and Typescript API
+                                backed by PostgreSQL.
+                            </p>
+                            <p class="text"> <br /> </p>
+                            <p class="text">
+                                This project was an exercise in implementing an Object Relational Mapper (ORM) like
+                                Java's
+                                Hibernate in Typescript.
+                                The initial scope included reimplementing Hibernate's annotation based configuration
+                                to
+                                automatically generate JOIN statements in SQL queries.
+                            </p>
+                            <p class="text"> <br /> </p>
+                            <p class="text">
+                                The back end parcel tracking system uses a message queue for adding new parcels with
+                                a
+                                background cron service to provide
+                                regular synchronizations with the Auspost API for package updates.
+                            </p>
+                            <p class="text"> <br /> </p>
+                            <p class="text">
+                                A notification script written in golang alerts the user whenever the package
+                                location
+                                changes.
+                            </p>
+                        </div>
+                        <img class="img clickable_img page_raised" src="/imgs/auspost_screenshot.PNG"
+                            style="width: 100%" />
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="box line_box" style="justify-content: center; margin-bottom: 20px">
+            <a href="https://github.com/wrong-commit/AusPohzt" 
+                class="page_raised button text"> link: GitHub </a>
+        </div> -->
+            <div class="box line_box" style="justify-content: center">
+                <span repo="auspost_document" class="page_raised button text" onclick='toggleRepo(this);'> click to
+                    expand </span>
+            </div>
+            <div id='auspost_repo_code_box' class="box code_box collapsed" clicked="yes">
+                <ul id="auspost_repo" class="dir_tree_box"> </ul>
+                <xmp id="auspost_document" class="document_display_box"> </xmp>
+            </div>
+        </div>
+        <!-- <div class="box page_raised">
+        <div class="box line_box">
+            <h2 class="header">2019 - 2024 | Employed as a fullstack dev working on FinTech automation...</h2>
+        </div>
+    </div> -->
+        <div class="box page_raised">
+            <div class="box line_box" style="flex-direction:column">
+                <h2 class="header toc_item">October 2018 | Bypassing Anti-Virus Systems With Encryption and Writing
+                    Malware</h2>
+                <div class="box">
+                    <p class="text">
+                        Anti Virus vendors run many types of scans against potentially malicious EXE files. Simple
+                        heuristic scans are not able adequately identify packed or encrypted malware.
+                    </p>
+                    <p class="text"> <br /> </p>
+                    <p class="text">
+                        I wrote this program in C using the Win32 API to bypass the static analysis performed by
+                        most
+                        anti-virus solutions (in addition to other more sophisticated techniques), and perform some
+                        example malware activities.
+                    </p>
+                    <p class="text"> <br /> </p>
+                    <p class="text">
+                        This program includes self decryption, some checks for Anti Virus sandboxes, wiping parts of
+                        the EXE headers
+                        from system memory to avoid static memory analysis, and then in-memory executing a
+                        downloaded process.
+                    </p>
+                </div>
+            </div>
+            <!-- <div class="box line_box" style="justify-content: center; margin-bottom: 20px">
+            <a href="https://github.com/wrong-commit/cryptor-and-loader" 
+                class="page_raised button text"> link: GitHub </a>
+        </div> -->
+            <div class="box line_box" style="justify-content: center">
+                <div repo="cryptor_document" class="page_raised button text" onclick='toggleRepo(this);'> click to
+                    expand </div>
+            </div>
+            <div id='cryptor_repo_code_box' class="box code_box collapsed" clicked="yes">
+                <ul id="cryptor_repo" class="dir_tree_box"> </ul>
+                <xmp id="cryptor_document" class="document_display_box"> </xmp>
+            </div>
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box">
+                <h2 class="header toc_item">2017 | Snooping SSL proxy that injects JS and steals credentials</h2>
+            </div>
+            <div class="box line_box" style="flex-direction:column;">
+                <div class="box">
+                    <p class="text">
+                        In this project I configured a HTTP proxy to generate bogus SSL certificates and inject
+                        JavaScript into any page visited by the proxy user.
+                        The injected JavaScript would record all form data that was entered by the proxy user, such
+                        as
+                        username and passwords.
+                        A custom NodeJS Command and Control server was created to record all information entered on
+                        the
+                        web page.
+                    </p>
+                    <p class="text"> <br /> </p>
+                    <p class="text">
+                        This project was inspired by
+                        <a target="_blank" class="nav_link"
+                            href="https://www.slideshare.net/chemai64/owning-bad-guys-and-mafia-with-javascript-botnets">a
+                            DEFCON 20 talk</a>. Using open source software, a malicious HTTP proxy intercepts SSL
+                        connections by generating SSL certificates
+                        on the fly to inject Javascript into every website the user visits, stealing every entered
+                        username and password combo.
+                    </p>
+                    <p class="text"> <br /> </p>
+                    <p class="text">
+                        This demonstrates how off the shelf software can be used for intercepting SSL traffic and
+                        hijacking network traffic, but it is
+                        limited in effect by not being able to generate real certificates on the fly. This is not
+                        necessarily a problem for a well resourced attacker.
+                    </p>
+                    <p class="text"> <br /> </p>
+                    <p class="text">
+                        A modern solution to this problem is to implement mitmproxy and a custom C&C server.
+                    </p>
+                </div>
+            </div>
+            <!-- <div class="box line_box" style="justify-content: center; margin-bottom: 20px">
+            <a href="https://github.com/wrong-commit/node-proxy-monitor" 
+                class="page_raised button text"> link: GitHub </a>
+        </div> -->
+            <div class="box line_box" style="justify-content: center">
+                <span repo="proxy_document" class="page_raised button text" onclick='toggleRepo(this);'> click to
+                    expand
+                </span>
+            </div>
+            <div id='proxy_repo_code_box' class="box code_box collapsed" clicked="yes">
+                <ul id="proxy_repo" class="dir_tree_box"> </ul>
+                <xmp id="proxy_document" class="document_display_box"> </xmp>
+            </div>
+        </div>
+        <div class="box page_raised">
+            <div class="box line_box" style="flex-direction:column;">
+                <h2 class="header toc_item">2016 | Crashing Windows Vista/7/Server 2008 Computers</h2>
+                <div class="box">
+                    <p class="text">
+                        This script exploits
+                        <a target="_blank" class="nav_link"
+                            href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-4669">CVE-2010-4669</a>.
+                    </p>
+                    <p class="text"> <br /> </p>
+                    <p class="text">
+                        This Denial of Service python script crafts IPv6 packets to crash vulnerable Windows Vista,
+                        7,
+                        and Server 2008 computers.
+                        The victim computers CPU will reach 100% while the script is running.
+                        Once the script is stopped the computers will slowly become available again, without a
+                        restart.
+                        This may also impact physical or virtual networking appliances.
+                    </p>
+                </div>
+            </div>
+            <!-- <div class="box line_box" style="justify-content: center; margin-bottom: 20px">
+            <a href="https://github.com/wrong-commit/CVE-2010-4669" 
+                class="page_raised button text"> link: GitHub </a>
+        </div> -->
+            <div class="box line_box" style="justify-content: center">
+                <span repo="raflood_document" class="page_raised button text" onclick='toggleRepo(this);'> click to
+                    expand
+                </span>
+            </div>
+            <div id='raflood_repo_code_box' class="box code_box collapsed" clicked="yes">
+                <ul id="raflood_repo" class="dir_tree_box"> </ul>
+                <xmp id="raflood_document" class="document_display_box"> </xmp>
+            </div>
+        </div>
+        <br>
+        <br>
+    </div>
+    <!-- Container for image viewer JS to use -->
+    <div id="full_page_img_container"></div>
+
+    <!-- ASCII FIRE ANIMATION -->
+    <!-- https://codepen.io/editor/metaimperiya/pen/019f85c0-e6f5-74f5-8011-96371dcc3db4 -->
+    <!-- The following style/html/script will render an ASCII fire animation at the bottom of the page behind all page_raised elements -->
+    <div id="fire-container" style="position: fixed; bottom: 0; left: 0; width: 100vw;">
+        <div id="fire-canvas" style="width: 100vw;"></div>
+    </div>
+    
+</body>
+<script src="/scripts/structure_builder.js"></script>
+<script src="/scripts/img_viewer.js"></script>
+<script src="/scripts/theme_changer.js"></script>
+<script src="/scripts/fire.js"></script>
+<script src="/scripts/trippy.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Generate links for every .header
+        const toc = document.getElementById('table_of_contents')
+        const headers = document.getElementsByClassName('header toc_item')
+        Array.from(headers).forEach(h => {
+            const href = h.textContent
+            toc.insertAdjacentHTML('beforeend', `<li>
+                <a style="text-transform: capitalize;" class="nav_link" href="#header ${href}">${href}</a>
+            </li>`)
+            h.setAttribute(`id`, `header ${href}`)
+        })
+
+        // Initialize code repos
+        downloadRepo("ansible-aws-deployment", "ansible_repo", "ansible_document");
+        downloadRepo("AusPohzt", "auspost_repo", "auspost_document");
+        downloadRepo("cryptor-and-loader", "cryptor_repo", "cryptor_document");
+        downloadRepo("node-proxy-monitor", "proxy_repo", "proxy_document");
+        downloadRepo("CVE-2010-4669", "raflood_repo", "raflood_document");
+        downloadRepo("crypto_tracker", "crypto_tracker_repo", "crypto_tracker_document");
+
+        startThemeAnimations(localStorage.getItem("theme"))
+    })
+</script>
+
+</html>

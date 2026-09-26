@@ -1,0 +1,13 @@
+/* https://codepen.io/editor/metaimperiya/pen/019f85c0-e6f5-74f5-8011-96371dcc3db4 */
+#fire-container {
+    background: #000;
+    display: none;
+}
+#fire-canvas {
+    white-space: pre;
+    font-size: 16px;
+    line-height: 0.85;
+    font-weight: bold;
+    color: #ff4500;
+    text-shadow: 0 0 8px rgba(255, 68, 0, 0.6);
+}

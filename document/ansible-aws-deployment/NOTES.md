@@ -1,0 +1,3 @@
+Neat use of spinning up ELB Target Groups to test for EC2 completion. 
+Found examples where dropping down to aws cli was necessary
+Deploying a whole Linux VM means builds are slow.... 

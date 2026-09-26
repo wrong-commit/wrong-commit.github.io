@@ -1,0 +1,28 @@
+:root { 
+    --ACCENT: #000000;
+    --bg-gray: #000000;
+
+    --background-color: var(--bg-gray);
+    --text-color: #00ff00;
+    --header-color: #00ff00;
+    --icon-color: #00ff00;
+
+    --button-text-color: #00ff00;
+    --button-background-color: var(--ACCENT);
+    --button-border-color: #00ff00;
+
+    --box-border-color: #00ff00;
+    --box-background-color: var(--ACCENT);
+    
+    --img-border-color: #00ff00;
+
+    --navigation-link-color: #00ff00;
+
+    --code-border-color: #00ff00;
+    --code-background-color: #000000;
+    --code-text-color: #00ff00;
+
+    --directory-list-background-color: var(--ACCENT);
+    --directory-list-border-color: #00ff00;
+    --directory-list-text-color: #00ff00;
+}
