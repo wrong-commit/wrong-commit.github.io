@@ -1,0 +1,39 @@
+:root { 
+    --ACCENT: #000000;
+    --bg-gray: #000000;
+
+    --background-color: var(--bg-gray);
+    --text-color: #ff0000;
+    --header-color: #ff0000;
+    --icon-color: #ff0000;
+
+    --button-text-color: #ff0000;
+    --button-background-color: var(--ACCENT);
+    --button-border-color: #ff0000;
+
+    --box-border-color: #ff0000;
+    --box-background-color: var(--ACCENT);
+    
+    --img-border-color: #ff0000;
+
+    --navigation-link-color: #ff0000;
+
+    --code-border-color: #ff0000;
+    --code-background-color: #000000;
+    --code-text-color: #ff0000;
+
+    --directory-list-background-color: var(--ACCENT);
+    --directory-list-border-color: #ff0000;
+    --directory-list-text-color: #ff0000;
+
+    /* Custom field for this theme. Allows for JS to control the height of the wrapper for mobile */
+    /* --evil-theme-wrapper-height: 100%; */
+}
+
+#fire-container {
+    display: initial !important
+}
+
+.wrapper {
+    height: var(--evil-theme-wrapper-height) !important;
+}

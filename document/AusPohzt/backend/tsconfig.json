@@ -1,0 +1,11 @@
+{
+    "extends": "../tsconfig.json",
+    // definitely do not use include, breaks vscode and npm
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib",
+        // TODO: determine if necessary 
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+    },
+}

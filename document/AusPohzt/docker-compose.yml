@@ -1,0 +1,80 @@
+version: '3'
+services:
+  aus-frontend:
+    restart: unless-stopped
+    build: 
+      context: .
+      dockerfile: Dockerfile.frontend
+      args:
+        # Define auspost-api.localhost as 127.0.0.1 in /etc/host
+        - API_URL=http://auspost-api.localhost:4000
+    ports:
+      - '5000:5000'
+    networks:
+      - auspohzt
+  aus-api:
+    restart: unless-stopped
+    build: 
+      context: .
+      dockerfile: Dockerfile.api
+    ports:
+      - '4000:4000'
+    depends_on:
+      - aus-db
+    environment:
+      - ENABLE_AUTH=false
+      - AUTH_COOKIE_NAME=bogan-auth
+      - HMAC_SECRET=correct battery horse staple
+      - API_URL=http://auspost-api.localhost:4000
+      - API_TOKEN=eyJhbGciOiJIUzI1NiJ9.YWRtaW4.FeUPkoBVJl6ja_oogZ1GZ-X0lkOyTTPJ_YipSEj8-9E
+      - WEB_PASSWORD=test password
+      - DIGITAL_API=https://digitalapi.auspost.com.au
+      - API_KEY=
+      - PORT=4000
+      - PG_HOST=aus-db
+      - PG_PORT=5432
+      - PG_USER=bogan
+      - PG_PASSWORD=123
+      - PG_DATABASE=auspohzt
+    networks:
+      - auspohzt
+  aus-db:
+    image: postgres
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=bogan
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=auspohzt
+      # For health check
+      # - PGUSER=bogan
+    networks:
+      - auspohzt
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    # Wait for DB 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d auspohzt -U bogan"]
+      interval: 5s
+      timeout: 2s
+      retries: 5
+  aus-db-migrate:
+    build: 
+      context: .
+      dockerfile: Dockerfile.dbmigrate
+    depends_on: 
+      aus-db: 
+        condition: service_healthy
+    environment:
+      - PG_HOST=aus-db
+      - PG_PORT=5432
+      - PG_USER=bogan
+      - PG_PASSWORD=123
+      - PG_DATABASE=auspohzt
+    networks:
+      - auspohzt
+networks:
+  auspohzt:
+volumes:
+  dbdata:

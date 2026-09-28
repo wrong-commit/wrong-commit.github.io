@@ -1,0 +1,333 @@
+{
+  "root": [
+    {
+      "parent": "/",
+      "name": ".github",
+      "type": "dir",
+      "children": [
+        {
+          "parent": "/.github/",
+          "name": "workflows",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/.github/workflows/",
+              "name": "aws_build_deploy.yml",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "parent": "/",
+      "name": "playbooks",
+      "type": "dir",
+      "children": [
+        {
+          "parent": "/playbooks/",
+          "name": "bash_awscli_getmetricdata",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/playbooks/bash_awscli_getmetricdata/",
+              "name": "tasks",
+              "type": "dir",
+              "children": [
+                {
+                  "parent": "/playbooks/bash_awscli_getmetricdata/tasks/",
+                  "name": "main.yml",
+                  "type": "file"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "parent": "/playbooks/",
+          "name": "build_image_server",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/playbooks/build_image_server/",
+              "name": "tasks",
+              "type": "dir",
+              "children": [
+                {
+                  "parent": "/playbooks/build_image_server/tasks/",
+                  "name": "main.yml",
+                  "type": "file"
+                }
+              ]
+            },
+            {
+              "parent": "/playbooks/build_image_server/",
+              "name": "vars",
+              "type": "dir",
+              "children": [
+                {
+                  "parent": "/playbooks/build_image_server/vars/",
+                  "name": "main.yml",
+                  "type": "file"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "parent": "/playbooks/",
+          "name": "create_app_loadbalancer",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/playbooks/create_app_loadbalancer/",
+              "name": "tasks",
+              "type": "dir",
+              "children": [
+                {
+                  "parent": "/playbooks/create_app_loadbalancer/tasks/",
+                  "name": "main.yml",
+                  "type": "file"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "parent": "/playbooks/",
+          "name": "create_app_vpc",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/playbooks/create_app_vpc/",
+              "name": "defaults",
+              "type": "dir",
+              "children": [
+                {
+                  "parent": "/playbooks/create_app_vpc/defaults/",
+                  "name": "main.yml",
+                  "type": "file"
+                }
+              ]
+            },
+            {
+              "parent": "/playbooks/create_app_vpc/",
+              "name": "tasks",
+              "type": "dir",
+              "children": [
+                {
+                  "parent": "/playbooks/create_app_vpc/tasks/",
+                  "name": "main.yml",
+                  "type": "file"
+                }
+              ]
+            },
+            {
+              "parent": "/playbooks/create_app_vpc/",
+              "name": "vars",
+              "type": "dir",
+              "children": [
+                {
+                  "parent": "/playbooks/create_app_vpc/vars/",
+                  "name": "main.yml",
+                  "type": "file"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "parent": "/playbooks/",
+          "name": "create_ec2_iam_role",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/playbooks/create_ec2_iam_role/",
+              "name": "tasks",
+              "type": "dir",
+              "children": [
+                {
+                  "parent": "/playbooks/create_ec2_iam_role/tasks/",
+                  "name": "main.yml",
+                  "type": "file"
+                }
+              ]
+            },
+            {
+              "parent": "/playbooks/create_ec2_iam_role/",
+              "name": "vars",
+              "type": "dir",
+              "children": [
+                {
+                  "parent": "/playbooks/create_ec2_iam_role/vars/",
+                  "name": "main.yml",
+                  "type": "file"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "parent": "/playbooks/",
+          "name": "create_rds",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/playbooks/create_rds/",
+              "name": "tasks",
+              "type": "dir",
+              "children": [
+                {
+                  "parent": "/playbooks/create_rds/tasks/",
+                  "name": "main.yml",
+                  "type": "file"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "parent": "/playbooks/",
+          "name": "create_secrets_manager",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/playbooks/create_secrets_manager/",
+              "name": "tasks",
+              "type": "dir",
+              "children": [
+                {
+                  "parent": "/playbooks/create_secrets_manager/tasks/",
+                  "name": "main.yml",
+                  "type": "file"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "parent": "/playbooks/",
+          "name": "create_security_group",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/playbooks/create_security_group/",
+              "name": "defaults",
+              "type": "dir",
+              "children": [
+                {
+                  "parent": "/playbooks/create_security_group/defaults/",
+                  "name": "main.yml",
+                  "type": "file"
+                }
+              ]
+            },
+            {
+              "parent": "/playbooks/create_security_group/",
+              "name": "tasks",
+              "type": "dir",
+              "children": [
+                {
+                  "parent": "/playbooks/create_security_group/tasks/",
+                  "name": "main.yml",
+                  "type": "file"
+                }
+              ]
+            },
+            {
+              "parent": "/playbooks/create_security_group/",
+              "name": "vars",
+              "type": "dir",
+              "children": [
+                {
+                  "parent": "/playbooks/create_security_group/vars/",
+                  "name": "main.yml",
+                  "type": "file"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "parent": "/playbooks/",
+          "name": "deploy_uat_or_prod",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/playbooks/deploy_uat_or_prod/",
+              "name": "tasks",
+              "type": "dir",
+              "children": [
+                {
+                  "parent": "/playbooks/deploy_uat_or_prod/tasks/",
+                  "name": "main.yml",
+                  "type": "file"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "parent": "/playbooks/",
+          "name": "main_build_latest_ami_and_deploy.yml",
+          "type": "file"
+        },
+        {
+          "parent": "/playbooks/",
+          "name": "main_build_latest_ami.yml",
+          "type": "file"
+        },
+        {
+          "parent": "/playbooks/",
+          "name": "main_create_secrets_manager.yml",
+          "type": "file"
+        },
+        {
+          "parent": "/playbooks/",
+          "name": "main_deploy_latest_ami.yml",
+          "type": "file"
+        },
+        {
+          "parent": "/playbooks/",
+          "name": "main_deploy_uat_production.yml",
+          "type": "file"
+        },
+        {
+          "parent": "/playbooks/",
+          "name": "pik-keypair.pem",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "parent": "/",
+      "name": ".env",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": ".gitignore",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "act.sh",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "NOTES.md",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "README.md",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "requirements.yml",
+      "type": "file"
+    }
+  ]
+}

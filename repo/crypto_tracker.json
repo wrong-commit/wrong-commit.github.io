@@ -1,0 +1,526 @@
+{
+  "root": [
+    {
+      "parent": "/",
+      "name": ".vscode",
+      "type": "dir",
+      "children": [
+        {
+          "parent": "/.vscode/",
+          "name": "settings.json",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "parent": "/",
+      "name": "crypto-price-api",
+      "type": "dir",
+      "children": [
+        {
+          "parent": "/crypto-price-api/",
+          "name": "metrics",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/crypto-price-api/metrics/",
+              "name": "metrics.go",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "parent": "/crypto-price-api/",
+          "name": "Dockerfile",
+          "type": "file"
+        },
+        {
+          "parent": "/crypto-price-api/",
+          "name": "go.mod",
+          "type": "file"
+        },
+        {
+          "parent": "/crypto-price-api/",
+          "name": "go.sum",
+          "type": "file"
+        },
+        {
+          "parent": "/crypto-price-api/",
+          "name": "main.go",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "parent": "/",
+      "name": "crypto-price-change-tracker",
+      "type": "dir",
+      "children": [
+        {
+          "parent": "/crypto-price-change-tracker/",
+          "name": "metrics",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/crypto-price-change-tracker/metrics/",
+              "name": "metrics.go",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "parent": "/crypto-price-change-tracker/",
+          "name": "Dockerfile",
+          "type": "file"
+        },
+        {
+          "parent": "/crypto-price-change-tracker/",
+          "name": "go.mod",
+          "type": "file"
+        },
+        {
+          "parent": "/crypto-price-change-tracker/",
+          "name": "go.sum",
+          "type": "file"
+        },
+        {
+          "parent": "/crypto-price-change-tracker/",
+          "name": "main.go",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "parent": "/",
+      "name": "crypto-price-database-migrator",
+      "type": "dir",
+      "children": [
+        {
+          "parent": "/crypto-price-database-migrator/",
+          "name": "migrations",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/crypto-price-database-migrator/migrations/",
+              "name": "1_create_prices_collection.down.json",
+              "type": "file"
+            },
+            {
+              "parent": "/crypto-price-database-migrator/migrations/",
+              "name": "1_create_prices_collection.up.json",
+              "type": "file"
+            },
+            {
+              "parent": "/crypto-price-database-migrator/migrations/",
+              "name": "2_create_prices_change_collection.down.json",
+              "type": "file"
+            },
+            {
+              "parent": "/crypto-price-database-migrator/migrations/",
+              "name": "2_create_prices_change_collection.up.json",
+              "type": "file"
+            },
+            {
+              "parent": "/crypto-price-database-migrator/migrations/",
+              "name": "3_create_assets_collection.down.json",
+              "type": "file"
+            },
+            {
+              "parent": "/crypto-price-database-migrator/migrations/",
+              "name": "3_create_assets_collection.up.json",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "parent": "/crypto-price-database-migrator/",
+          "name": "Dockerfile",
+          "type": "file"
+        },
+        {
+          "parent": "/crypto-price-database-migrator/",
+          "name": "go.mod",
+          "type": "file"
+        },
+        {
+          "parent": "/crypto-price-database-migrator/",
+          "name": "go.sum",
+          "type": "file"
+        },
+        {
+          "parent": "/crypto-price-database-migrator/",
+          "name": "main.go",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "parent": "/",
+      "name": "crypto-price-fe",
+      "type": "dir",
+      "children": [
+        {
+          "parent": "/crypto-price-fe/",
+          "name": "Dockerfile",
+          "type": "file"
+        },
+        {
+          "parent": "/crypto-price-fe/",
+          "name": "index.html",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "parent": "/",
+      "name": "crypto-price-producer",
+      "type": "dir",
+      "children": [
+        {
+          "parent": "/crypto-price-producer/",
+          "name": "metrics",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/crypto-price-producer/metrics/",
+              "name": "metrics.go",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "parent": "/crypto-price-producer/",
+          "name": "Dockerfile",
+          "type": "file"
+        },
+        {
+          "parent": "/crypto-price-producer/",
+          "name": "go.mod",
+          "type": "file"
+        },
+        {
+          "parent": "/crypto-price-producer/",
+          "name": "go.sum",
+          "type": "file"
+        },
+        {
+          "parent": "/crypto-price-producer/",
+          "name": "main.go",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "parent": "/",
+      "name": "k8s-examples",
+      "type": "dir",
+      "children": [
+        {
+          "parent": "/k8s-examples/",
+          "name": "autoscaled-project",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/k8s-examples/autoscaled-project/",
+              "name": "dns-utils.yaml",
+              "type": "file"
+            },
+            {
+              "parent": "/k8s-examples/autoscaled-project/",
+              "name": "echo-server-hpa.yaml",
+              "type": "file"
+            },
+            {
+              "parent": "/k8s-examples/autoscaled-project/",
+              "name": "echo-server.yaml",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "parent": "/k8s-examples/",
+          "name": "k8s",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/k8s-examples/k8s/",
+              "name": "dns-utils.yaml",
+              "type": "file"
+            },
+            {
+              "parent": "/k8s-examples/k8s/",
+              "name": "sexy-server-consumer-hpa.yaml",
+              "type": "file"
+            },
+            {
+              "parent": "/k8s-examples/k8s/",
+              "name": "sexy-server-consumer.yaml",
+              "type": "file"
+            },
+            {
+              "parent": "/k8s-examples/k8s/",
+              "name": "sexy-server-producer.yaml",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "parent": "/",
+      "name": "kafka-assets",
+      "type": "dir",
+      "children": [
+        {
+          "parent": "/kafka-assets/",
+          "name": "volumes",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/kafka-assets/volumes/",
+              "name": "dashboards",
+              "type": "dir",
+              "children": [
+                {
+                  "parent": "/kafka-assets/volumes/dashboards/",
+                  "name": "confluent-platform.json",
+                  "type": "file"
+                },
+                {
+                  "parent": "/kafka-assets/volumes/dashboards/",
+                  "name": "dashboard.yml",
+                  "type": "file"
+                },
+                {
+                  "parent": "/kafka-assets/volumes/dashboards/",
+                  "name": "kafka-cluster-kraft.json",
+                  "type": "file"
+                },
+                {
+                  "parent": "/kafka-assets/volumes/dashboards/",
+                  "name": "kafka-cluster.json",
+                  "type": "file"
+                },
+                {
+                  "parent": "/kafka-assets/volumes/dashboards/",
+                  "name": "kafka-connect-cluster.json",
+                  "type": "file"
+                },
+                {
+                  "parent": "/kafka-assets/volumes/dashboards/",
+                  "name": "kafka-topics-kraft.json",
+                  "type": "file"
+                },
+                {
+                  "parent": "/kafka-assets/volumes/dashboards/",
+                  "name": "kafka-topics.json",
+                  "type": "file"
+                },
+                {
+                  "parent": "/kafka-assets/volumes/dashboards/",
+                  "name": "kafka-transaction-coordinator.json",
+                  "type": "file"
+                },
+                {
+                  "parent": "/kafka-assets/volumes/dashboards/",
+                  "name": "kraft.json",
+                  "type": "file"
+                },
+                {
+                  "parent": "/kafka-assets/volumes/dashboards/",
+                  "name": "ksqldb-cluster.json",
+                  "type": "file"
+                },
+                {
+                  "parent": "/kafka-assets/volumes/dashboards/",
+                  "name": "microservice-metrics.json",
+                  "type": "file"
+                },
+                {
+                  "parent": "/kafka-assets/volumes/dashboards/",
+                  "name": "replicator.json",
+                  "type": "file"
+                },
+                {
+                  "parent": "/kafka-assets/volumes/dashboards/",
+                  "name": "rest-proxy.json",
+                  "type": "file"
+                },
+                {
+                  "parent": "/kafka-assets/volumes/dashboards/",
+                  "name": "schema-registry-cluster.json",
+                  "type": "file"
+                },
+                {
+                  "parent": "/kafka-assets/volumes/dashboards/",
+                  "name": "tiered-storage.json",
+                  "type": "file"
+                },
+                {
+                  "parent": "/kafka-assets/volumes/dashboards/",
+                  "name": "zookeeper-cluster.json",
+                  "type": "file"
+                },
+                {
+                  "parent": "/kafka-assets/volumes/dashboards/",
+                  "name": "zookeeper-overview.json",
+                  "type": "file"
+                }
+              ]
+            },
+            {
+              "parent": "/kafka-assets/volumes/",
+              "name": "provisioning",
+              "type": "dir",
+              "children": [
+                {
+                  "parent": "/kafka-assets/volumes/provisioning/",
+                  "name": "dashboards",
+                  "type": "dir",
+                  "children": [
+                    {
+                      "parent": "/kafka-assets/volumes/provisioning/dashboards/",
+                      "name": "dashboard.yml",
+                      "type": "file"
+                    }
+                  ]
+                },
+                {
+                  "parent": "/kafka-assets/volumes/provisioning/",
+                  "name": "datasources",
+                  "type": "dir",
+                  "children": [
+                    {
+                      "parent": "/kafka-assets/volumes/provisioning/datasources/",
+                      "name": "datasource.yml",
+                      "type": "file"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "parent": "/kafka-assets/volumes/",
+              "name": "config.ini",
+              "type": "file"
+            },
+            {
+              "parent": "/kafka-assets/volumes/",
+              "name": "jline-2.14.6.jar",
+              "type": "file"
+            },
+            {
+              "parent": "/kafka-assets/volumes/",
+              "name": "jmx_prometheus_javaagent-1.1.0.jar",
+              "type": "file"
+            },
+            {
+              "parent": "/kafka-assets/volumes/",
+              "name": "kafka_config.yml",
+              "type": "file"
+            },
+            {
+              "parent": "/kafka-assets/volumes/",
+              "name": "prometheus.yml",
+              "type": "file"
+            },
+            {
+              "parent": "/kafka-assets/volumes/",
+              "name": "zookeeper_config.yml",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "parent": "/",
+      "name": "screenshots",
+      "type": "dir",
+      "children": [
+        {
+          "parent": "/screenshots/",
+          "name": "grafana",
+          "type": "dir",
+          "children": [
+            {
+              "parent": "/screenshots/grafana/",
+              "name": "microservice-metrics-1.png",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "parent": "/screenshots/",
+          "name": "alpha.png",
+          "type": "file"
+        },
+        {
+          "parent": "/screenshots/",
+          "name": "beta-1.png",
+          "type": "file"
+        },
+        {
+          "parent": "/screenshots/",
+          "name": "beta-2.png",
+          "type": "file"
+        },
+        {
+          "parent": "/screenshots/",
+          "name": "beta-3.png",
+          "type": "file"
+        },
+        {
+          "parent": "/screenshots/",
+          "name": "beta-4.png",
+          "type": "file"
+        },
+        {
+          "parent": "/screenshots/",
+          "name": "beta-5-better.png",
+          "type": "file"
+        },
+        {
+          "parent": "/screenshots/",
+          "name": "beta-5.png",
+          "type": "file"
+        },
+        {
+          "parent": "/screenshots/",
+          "name": "beta-6.png",
+          "type": "file"
+        },
+        {
+          "parent": "/screenshots/",
+          "name": "beta-7.png",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "parent": "/",
+      "name": ".env",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "docker-compose.yml",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "KAFKA_README.md",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "MONGO_README.md",
+      "type": "file"
+    },
+    {
+      "parent": "/",
+      "name": "README.md",
+      "type": "file"
+    }
+  ]
+}
