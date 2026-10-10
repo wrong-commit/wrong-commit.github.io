@@ -1,0 +1,11 @@
+<% for(let i=0; i < entries.length; i++) { %>
+    <tr>
+            <% let entry = entries[i]%>
+            <td class="ip"> <%= entry.ip %> </td>
+            <td class="url"> <%= entry.url %> </td>
+            <td class="useragent"> <%= entry.userAgent %> </td>
+            <td> <%= entry.OS %> </td> 
+            <td class="cookies"> <%= entry.cookies %> </td>
+            <td class="time"> <%= entry.created %> </td>
+    </tr>
+<% } %>	

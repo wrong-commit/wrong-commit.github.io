@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Ms Wolf - Marrickville
+        </title>
+        <script>
+            // Closed Good Friday, Christmas and Boxing Day.
+            function shouldShowBarClosedMessage() {
+                const currMonth = new Date(Date.now()).getMonth() + 1;
+                const areWeClosedThisMonth = currMonth === 4 || currMonth === 12;
+                return areWeClosedThisMonth;
+            }
+        </script>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        />
+        <style>
+            :root {
+                --PINK: #eb28de;
+            }
+            /* general ruleset and colour styling for document */
+            /* FIXME: make it so the background is pink and the top section is black
+                ensure that gutters remain black full height of page */
+            html, body { 
+                padding: 0;
+                margin: 0;
+                background-color: black;
+                color: white;
+                font-family: 'Times New Roman', Times, serif
+            }
+            /* Double font size for small screens */
+            @media (max-width: 1024px) {
+                html {
+                    font-size: 200%; /* Defaults to 16px, scales with user device preferences */
+                }
+            }
+            /* Main scrolling site container, side gutters for centering content */
+            .container {
+                padding: 0 20% 0 20%;
+                min-height: 100vh;
+            }
+            /* Remove gutter padding for small screens */
+            @media screen and (max-width: 1024px) {
+                .container {
+                    padding: 0;
+                }
+            }
+            /* add pink border to all images */
+            .hero-image {
+                height: 400px;
+                width: auto;
+                border: 4px solid var(--PINK);
+            }
+            /* Style stretched CSV for rendering triangle to separate pages */
+            .triangle-svg-container {
+                height: 100px;
+                width: 100%;
+                position: relative;
+                /* margin-top: 1px; */
+                display: flex;
+                align-items: stretch;
+                margin-bottom: -1px;
+            }
+            #triangle-svg {
+                fill:  var(--PINK);
+                width: 100%;
+                height: 100%;
+            }
+            /* Remove text margins */
+            h2, p { 
+                margin-block: 0;
+            }
+            /* Monospce utilitiy */
+            .mono-space {
+                font-family: 'Courier New', Courier, monospace;
+            }
+            /* Add spacing for main title bar  */
+            .title-bar {
+                min-height: 10%;
+                /* Space inner contents properly */
+                padding: 10px 20px 0px 20px;
+                /* Use flexbox for left and right adjusted child elements */
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+            }
+            /* Wrapper for social media badges */
+            .social-media-badge {
+                /* FIXME: this is ugly */
+                background-color: white;
+                padding: 0.25rem;
+                border-radius: 1ch; 
+                border-color: black;
+                border: 2px solid black;
+            }
+            /* Style and size the bottom text heavy section of the site */
+            .bottom-section { 
+                position: relative;
+                z-index: 2;
+                /* top: -10px; */
+                background-color:  var(--PINK);
+                width: 100%; 
+                /* height: 40%; */
+                /* Add bottom spacing to page  */
+                padding-bottom: 3rem; 
+                display: flex;
+                /* Add spacing between contents */
+                gap: 2rem;  
+                /* Center align text */
+                align-items: center;
+                /* Arrange children in column order */
+                flex-direction: column;
+            }
+            /* Add left side padding for text  */
+            .bottom-section>div {
+                min-width: 60%;
+                max-width: 60%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            @media(max-width: 1024px) {
+                .bottom-section>div {
+                    min-width: 80%;
+                    max-width: 80%;
+                }
+            }
+            .map {
+                border-radius: 0.25ch;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="title-bar">
+                <h1 class="mono-space">Ms Wolf</h1>
+                <!-- <h1 class="mono-space" style="text-decoration: none; color: white">Call: 0444 555 666</h1> -->
+            </div>
+            <!-- Top half of site -->
+            <div style="padding-bottom: 40px; padding-top: 2rem">
+                <!-- MS Wolf -->
+                <!-- placeholder image -->
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <!-- FIXME: add my simple image viewer and base64 inline href data-->
+                    <!-- <img class="hero-image" src="https://placekittens.com/600/400" alt="MS Wolf"> -->
+                    <img class="hero-image" src="./imgs/wolf_front.jpg" alt="MS Wolf">
+                </div>
+                <div style="margin-top: 2rem; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 1rem;">
+                    <p class="mono-space"> 
+                        Local gay bar in Marrickville. Dog friendly.
+                    </p>
+                    <p class="mono-space"> 
+                        Open 7 days a week, 5pm until late.  
+                    </p>
+                    <!-- Shows after page loads -->
+                    <p id="holiday-closure-warning" class="mono-space" style="display: none"> 
+                        Please note: we will be closed Good Friday, Christmas and Boxing Day.
+                    </p>
+                </div>
+            </div>
+            <div class="triangle-svg-container">
+                <svg id="triangle-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <polygon points="0 100, 100 0, 100 100" />
+                </svg>
+            </div>
+            <!-- Bottom half of site -->
+            <div class="bottom-section">
+                <!-- FIXME: make this section clickable to open a new tab -->
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <a style="color: white;" href="/menu.pdf"><h2 class="mono-space" >Menu</h2></a>
+                    <!-- FIXME: mention bringing food in from nearby -->
+                    <p class="mono-space">Cocktails, wine, beer. BYO food from nearby restaurants.</p>
+                </div>
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <h2 class="mono-space">Drag Shows</h2>
+                    <p class="mono-space">Drag shows every Saturday night at 8pm/9pm/10pm.</p>
+                </div>
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <h2 class="mono-space">Address</h2>
+                    <a href="https://maps.app.goo.gl/8BDx3Jin963cLo9D7" class="mono-space" style="color: white;">
+                        285 Marrickville Road, Marrickville NSW
+                    </a> 
+                </div>
+                <!-- Embedded Google Maps view -->
+                <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d26491.20911936186!2d151.1354076!3d-33.905074!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b12b1a968736947%3A0xb614e771646cd6e1!2sMiss%20Wolf!5e0!3m2!1sen!2sau!4v1791518852887!5m2!1sen!2sau" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                <!-- Social Media links -->
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <h2 class="mono-space">Find us on social media!</h2>
+                    <div style="padding-top: 0.5rem; display: flex; gap: 15px; align-items: center; justify-content: center; flex-direction: row;">
+                        <a
+                        class="social-media-badge"
+                        href="https://www.facebook.com/misswolfmarrickville"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Facebook"
+                        style="color: #1877F2; font-size: 28px; text-decoration: none;"
+                        >
+                        <i class="fa-brands fa-facebook"></i>
+                        </a>
+                        <a
+                        class="social-media-badge"
+                        href="https://www.instagram.com/MissWolfMarrickville"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Instagram"
+                        style="color: #E1306C; font-size: 28px; text-decoration: none;"
+                        >
+                        <i class="fa-brands fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            <p class="mono-space" style="text-align: center;">no sex on premises</p>
+        </div>
+        </div>
+    </body>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (shouldShowBarClosedMessage()) {
+                document.getElementById("holiday-closure-warning")?.style.setProperty("display", "initial")
+            }
+        })
+    </script>
+</html>

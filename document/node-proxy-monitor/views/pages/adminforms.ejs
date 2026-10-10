@@ -1,0 +1,73 @@
+<html>
+<head>
+	<title> <%= title %> </title>
+	<% include ../partials/head %>
+</head>
+<body>
+
+	<table class="admin">
+		<thead>
+			<td> IP </td>
+			<td> URL </td>
+			<td> User-Agent </td>
+			<td> Form Data </td>
+			<td> Cookies </td>
+			<td> Time </td>
+		</thead>
+		<% for(let i=0; i < entries.length; i++) { %>
+			<tr>
+				<% let entry = entries[i]%>
+				<td class="ip"> <%= entry.ip %> </td>
+				<td class="url"> <%= entry.url %> </td>
+				<td class="useragent"> <%= entry.userAgent %> </td>
+				<td class="formData"> 
+					<% 
+					let fd = entry.formData
+					for( let e=0; e < fd.length && fd[e] != null; e++){ %>
+						<%= JSON.stringify( fd[e], null, ' ') %> 
+					<% }%> 
+				</td> 
+				<td class="cookies"> <%= entry.cookies %> </td>
+				<td class="time"> <%= entry.created %> </td>
+			</tr>
+		<% } %>	
+
+	</table>
+	
+	<form name="testdata" action="/forms" class="admin">
+		<h2>Upload Test Data</h2>
+		<label>IP</label>
+		<input name="sender"/> <br/>
+		<label>UA</label>
+		<input name="userAgent"/><br/>
+		<label>Cookies</label>
+		<input name="cookies"/><br/>
+		<label>URL</label>
+		<input name="url"/><br/>
+		<label>Form Data</label>
+		<input name="data"/><br/>
+		<button type="submit">Submit Test Data</button>
+	</form>
+</body>
+<script>
+document.querySelector("form[name='testdata']")
+  .addEventListener("submit", async function(event) { 
+	event.preventDefault();
+	const form = event.currentTarget;
+	const url = form.action;
+
+	try {
+		const formData = new FormData(form);
+		const responseData = await postFormDataAsJson({
+			url,
+			formData
+		});
+		console.log({
+		responseData
+		});
+	} catch (error) {
+		console.error(error);
+	}
+  })
+</script>
+</html>

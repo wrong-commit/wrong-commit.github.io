@@ -1,0 +1,66 @@
+# Create IAM role so EC2 can access secrets manage
+- assert:
+    that:
+    - aws_access_key != ""
+    - aws_secret_key != ""
+    - iam_role_name != ""
+    - iam_policy_name != ""
+    - secrets_manager_arn != ""
+
+# Create IAM role
+- name: Create IAM Role
+  amazon.aws.iam_role:
+    name: "{{ iam_role_name }}"
+    assume_role_policy_document: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "ec2.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      }
+    description: "Role for EC2 instances to access Secrets Manager"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    region: "{{ region }}"
+  register: iam_ec2_role_result
+
+# Create IAM policy
+- name: Create IAM policy
+  amazon.aws.iam_policy:
+    policy_name: "{{ iam_policy_name }}"
+    # Target created role 
+    iam_name: "{{ iam_ec2_role_result.iam_role.role_name }}"
+    iam_type: role
+    policy_json: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Action": "secretsmanager:GetSecretValue",
+            "Resource": "{{ secrets_manager_arn }}"
+          }
+        ]
+      }
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    region: "{{ region }}"
+  register: policy_result
+
+- name: Find all IAM instance profile ARN for created IAM role
+  amazon.aws.iam_instance_profile_info:
+    name: "{{ iam_role_name }}"
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+  register: raw_iam_instance_profile_result
+- set_fact: 
+    iam_instance_profile_arn_result: "{{ raw_iam_instance_profile_result.iam_instance_profiles[0].arn }}"
+- debug:
+    var: iam_instance_profile_arn_result
