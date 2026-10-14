@@ -1,0 +1,20 @@
+# Stage 1: Alpine Linux with Node JS
+FROM node:21.7.2-alpine as builder
+WORKDIR /usr/src
+# Defaults to production, docker-compose overrides this to development on build and run.
+ARG NODE_ENV=production
+ENV NODE_ENV $NODE_ENV
+# ! Copy root Node JS package objects to folder above Node build folder
+COPY ./tsconfig.build.json ./tsconfig.json ./package.json /usr/src/ 
+# Npm install root directory
+RUN npm install --include dev
+# Reset working directory
+WORKDIR /usr/src/app
+# Copy build files into app folder
+COPY ./backend/package.json /usr/src/app/
+# Install node modules
+RUN npm install --include dev
+# Copy DB migration files
+COPY ./backend/migrations /usr/src/app/migrations
+COPY ./backend/database.json ./backend/.db-migraterc  /usr/src/app/
+CMD npm run migrate
