@@ -1,0 +1,4 @@
+{
+    "jestrunner.configPath": "backend/jest.it.config.js",
+    "git.ignoreLimitWarning": true
+}

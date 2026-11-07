@@ -1,0 +1,109 @@
+- assert:
+    that:
+    - aws_access_key != ""
+    - aws_secret_key != ""
+    # AWS Launch AMI 
+    - name_prefix != "" 
+    - rds_size != ""
+    - vpc_id != ""
+    - ec2_sg_id != "" 
+    # DB secrets
+    - conf_db_port != ""
+    - conf_db_user != ""
+    - conf_db_pass != ""
+- name: Set AWS default varaibles
+  set_fact:
+    aws_region: ap-southeast-2
+    tag_ec2_instance_name: "{{ '%Y%m%d-%H%M%S' | strftime }}"
+    tag_db2_creation_time: "{{ '%Y%m%d-%H%M%S' | strftime }}"
+- name: Create VPC
+  include_role: 
+    name: create_app_vpc
+  vars:
+    # VPC Name
+    vpc_name: "{{ name_prefix }}-vpc"
+    # Internet Gateway Name
+    igw_name: "{{ name_prefix }}-igw"
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    # Values could be 
+    # 10.0.0.0/16
+    # 10.0.0.0/24
+    cidr_block: "10.0.0.0/16" 
+    # Subnet AZ
+    subnet_1_cidr_block: "10.0.0.0/20"
+    subnet_2_cidr_block: "10.0.16.0/20"
+    subnet_3_cidr_block: "10.0.32.0/20"
+    route_table_name: "{{ name_prefix }}-rtb-public"
+    # Route destination CIDR to global internet
+    destination_cidr_block: "0.0.0.0/0"
+- name: Create RDS Security Group
+  amazon.aws.ec2_group:
+    name: "{{ name_prefix }}-rds-sg"
+    description: "Security group for {{ pik_env }} RDS servers"
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    vpc_id: "{{ vpc_id }}"
+    rules:
+      # Debug
+      # - proto: tcp
+      #   from_port: "{{ conf_db_port }}"
+      #   to_port: "{{ conf_db_port }}"
+      #   cidr_ip: 0.0.0.0/0
+      #   group_desc: Global debug inbound
+      # Allow RDS to access EC2 SG
+      - proto: tcp
+        from_port: "{{ conf_db_port }}"
+        to_port: "{{ conf_db_port }}"
+        group_id: "{{ ec2_sg_id }}"
+        group_desc: RDS access EC2 
+    rules_egress:
+      - proto: all
+        cidr_ip: 0.0.0.0/0
+        group_desc: Allow all traffic outbound
+    state: present
+  register: rds_sg_result
+  tags: create_sg
+- name: Display RDS SG details
+  debug:
+    msg: "RDS Security Group ID: {{ rds_sg_result.group_id }}"
+- name: Create RDS Subnet Group
+  amazon.aws.rds_subnet_group:
+    state: present
+    name: "{{ name_prefix }}-sng"
+    description: "Pikachu {{ pik_env }} RDS Subnet Group"
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    # Does one subnet mean no DB replication? 
+    subnets:
+      - "{{ pik_subnet_1_result.subnet.id }}"
+      - "{{ pik_subnet_2_result.subnet.id }}"
+      - "{{ pik_subnet_3_result.subnet.id }}"
+  register: rds_subnet_result
+- name: Create RDS 
+  rds_instance:
+    db_instance_identifier: "{{ name_prefix }}-db"
+    db_name: auspohzt
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    engine: postgres
+    instance_type: "{{ rds_size }}"
+    publicly_accessible: true
+    allocated_storage: 20
+    username: "{{ conf_db_user }}"
+    password: "{{ conf_db_pass }}"
+    vpc_security_group_ids: "{{ rds_sg_result.group_id }}"
+    db_subnet_group_name: "{{ rds_subnet_result.subnet_group.name }}"
+    tags:
+      Environment: "{{ pik_env }}"
+      Application: Pikachu
+  register: rds_result
+- name: RDS DNS Name
+  debug:
+    msg: "RDS DNS Name: {{ rds_result.endpoint.address }}" 
+- debug: 
+    var: rds_result

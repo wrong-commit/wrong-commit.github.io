@@ -1,0 +1,56 @@
+- name: Deploy UAT/PROD Script 
+  hosts: localhost
+  gather_facts: false
+  vars:
+    pik_env: PROD # UAT/PROD
+    hostenvs:
+      UAT: 
+        ec2_size: t2.micro
+        name_prefix: pik-uat
+        rds_size: db.t3.micro
+      PROD: 
+        ec2_size: t2.micro
+        name_prefix: pik-prod
+        rds_size: db.t3.micro
+    ec2_size: "{{ hostenvs[pik_env].ec2_size }}"
+    name_prefix: "{{ hostenvs[pik_env].name_prefix }}"
+    rds_size: "{{ hostenvs[pik_env].rds_size }}"
+    app_ami_id: ami-0c22fb05a13baf9f9
+  # Create 2 security groups for HTTP Load Balancer access
+  # Creates VPC 
+  # Creates EC2 Key Pair 
+  # Creates Target Group
+  # Creates new Launch Template version
+  # Creates Auto Scaling Group
+  # Creates ELB
+  # Deploys EC2 Instance
+  # Attach EC2 To Target Group
+  tasks: 
+    - assert:
+        that:
+        - aws_access_key != ""
+        - aws_secret_key != ""
+        # AWS Launch AMI 
+        - app_ami_id != ""
+        - ec2_size != ""
+        - name_prefix != "" 
+        - rds_size != ""
+    - name: Set AWS default varaibles
+      set_fact:
+        aws_region: ap-southeast-2
+        tag_ec2_instance_name: "{{ '%Y%m%d-%H%M%S' | strftime }}"
+        tag_db2_creation_time: "{{ '%Y%m%d-%H%M%S' | strftime }}"
+    - name: Deploy UAT environment
+      include_role: 
+        name: deploy_uat_or_prod
+      vars:
+        # app_ami_id: "{{ app_ami_id }}"
+        # name_prefix: "{{ name_prefix }}"
+        region: "{{ aws_region }}"
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        # ec2_size: "{{ ec2_size }}"
+        # rds_size: db.t3.micro
+        conf_db_port: 5432
+        conf_db_user: dummy
+        conf_db_pass: dummy
