@@ -1,0 +1,22 @@
+# Task definition to create AWS Security Group
+- name: Create EC2 Security Group 
+  amazon.aws.ec2_group:
+    name: "{{ name_prefix }}-ec2-sg"
+    description: Security group for build EC2 servers
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    vpc_id: "{{ pik_vpc_net_result.vpc.id }}"
+    rules:
+      # Allow global SSH
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+        group_desc: Allow global SSH access
+    rules_egress:
+      - proto: all
+        cidr_ip: 0.0.0.0/0
+        group_desc: Allow all traffic outbound
+    state: present
+  register: ec2_sg_result

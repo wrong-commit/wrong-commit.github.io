@@ -1,0 +1,50 @@
+- name: Deploy custom AMI 
+  hosts: localhost
+  gather_facts: false
+  vars:
+    # t2.small for building node JS applications and docker files 
+    pik_build_server_size: t2.small
+    pik_env: UAT # UAT/PROD
+    hostenvs:
+      UAT: 
+        ec2_size: t2.micro
+        name_prefix: pik-uat
+        rds_size: db.t3.micro
+      PROD: 
+        ec2_size: t2.micro
+        name_prefix: pik-prod
+        rds_size: db.t3.micro
+    ec2_size: "{{ hostenvs[pik_env].ec2_size }}"
+    name_prefix: "{{ hostenvs[pik_env].name_prefix }}"
+    rds_size: "{{ hostenvs[pik_env].rds_size }}"
+    # Working auspohzt 
+    app_ami_id: ami-08e1a4cee5a21d367
+    # Linux AMI
+    # app_ami_id: ami-0d11f9bfe33cfbe8b 
+  # Deploys AMI to UAT or PROD environment
+  # Configure live load balancers and auto scaling rules
+  tasks: 
+    - assert:
+        that:
+        - aws_access_key != ""
+        - aws_secret_key != ""
+        - app_git_repo != ""
+        - app_git_branch != ""
+    - name: Set AWS default varaibles
+      set_fact:
+        aws_region: ap-southeast-2
+        tag_ec2_creation_time: "{{ '%Y%m%d-%H%M%S' | strftime }}"
+    - name: Deploy UAT environment
+      include_role: 
+        name: deploy_uat_or_prod
+      vars:
+        # name_prefix: "{{ name_prefix }}"
+        region: "{{ aws_region }}"
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        # ec2_size: "{{ ec2_size }}"
+        # rds_size: db.t3.micro
+        conf_db_port: 5432
+        conf_db_user: dummy
+        conf_db_pass: dummypassword
+      
