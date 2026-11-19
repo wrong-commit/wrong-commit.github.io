@@ -1,0 +1,204 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+/* Dark AI landing page: Inter, black mesh, glass cards, gradient type, pill CTA. */
+:root {
+    --slop-font: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --slop-ink: #d4d4d8;
+    --slop-heading: #fafafa;
+    --slop-violet: #c4b5fd;
+    --slop-card: rgba(18, 16, 28, 0.72);
+
+    --ACCENT: #a78bfa;
+    --bg-gray: #09090b;
+
+    --background-color: #09090b;
+    --text-color: var(--slop-ink);
+    --header-color: var(--slop-heading);
+    --icon-color: var(--slop-violet);
+
+    --button-text-color: #ffffff;
+    --button-background-color: #7c3aed;
+    --button-border-color: transparent;
+
+    --box-border-color: rgba(255, 255, 255, 0.08);
+    --box-background-color: var(--slop-card);
+
+    --img-border-color: transparent;
+
+    --navigation-link-color: var(--slop-violet);
+
+    --code-border-color: rgba(167, 139, 250, 0.28);
+    --code-background-color: #0c0a12;
+    --code-text-color: #e4e4e7;
+
+    --directory-list-background-color: #161222;
+    --directory-list-border-color: rgba(196, 181, 253, 0.28);
+    --directory-list-text-color: #e9d5ff;
+}
+
+/* head.css sets monospace !important on html/body, and this sheet loads first. */
+:root,
+html body {
+    font-family: var(--slop-font) !important;
+}
+
+html,
+body {
+    background-color: #09090b !important;
+    background-image:
+        radial-gradient(900px 520px at 8% -10%, rgba(124, 58, 237, 0.45), transparent 60%),
+        radial-gradient(720px 420px at 100% 0%, rgba(219, 39, 119, 0.28), transparent 55%),
+        radial-gradient(840px 520px at 85% 110%, rgba(79, 70, 229, 0.32), transparent 60%),
+        radial-gradient(640px 420px at -5% 85%, rgba(14, 165, 233, 0.18), transparent 55%) !important;
+    background-attachment: fixed !important;
+    color: var(--slop-ink);
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(196, 181, 253, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(196, 181, 253, 0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at 50% 15%, #000 15%, transparent 72%);
+}
+
+.wrapper {
+    position: relative;
+    z-index: 1;
+    background: transparent !important;
+    scrollbar-color: #6d28d9 transparent;
+}
+
+.header {
+    font-family: var(--slop-font) !important;
+    font-weight: 650;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+    text-transform: none !important;
+    background-image: linear-gradient(100deg, #a5b4fc 0%, #d8b4fe 48%, #f9a8d4 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent !important;
+    -webkit-text-fill-color: transparent;
+}
+
+.header a {
+    font-family: var(--slop-font) !important;
+    color: var(--slop-violet) !important;
+    -webkit-text-fill-color: var(--slop-violet);
+    background: none !important;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+    text-decoration: none;
+}
+
+.text,
+.nav_link,
+.box,
+ol.text,
+ul.text {
+    font-family: var(--slop-font) !important;
+}
+
+.text {
+    color: var(--slop-ink) !important;
+    line-height: 1.7;
+}
+
+.text > a,
+a.text,
+.nav_link,
+.nav_link:link,
+.nav_link:visited,
+h2 > a {
+    color: var(--slop-violet) !important;
+    font-family: var(--slop-font) !important;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    text-decoration-color: rgba(196, 181, 253, 0.45);
+}
+
+.box {
+    background-color: transparent !important;
+    font-family: var(--slop-font) !important;
+}
+
+.wrapper > .box.page_raised {
+    background: var(--slop-card) !important;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 1.5rem !important;
+    box-shadow:
+        0 24px 70px -28px rgba(0, 0, 0, 0.85),
+        0 0 0 1px rgba(167, 139, 250, 0.12),
+        0 1px 0 rgba(255, 255, 255, 0.06) inset !important;
+    padding: 0.85rem 1rem 1.1rem;
+    box-sizing: border-box;
+}
+
+.page_raised {
+    border-radius: 1.25rem;
+}
+
+img.page_raised,
+.img.page_raised {
+    border: none !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 18px 40px -16px rgba(0, 0, 0, 0.7) !important;
+}
+
+.page_raised.button,
+.button {
+    font-family: var(--slop-font) !important;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 48%, #db2777 100%) !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    border: none !important;
+    border-radius: 999px !important;
+    box-shadow: 0 12px 28px -10px rgba(124, 58, 237, 0.85) !important;
+    padding: 0.7rem 1.35rem !important;
+    transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.page_raised.button:hover,
+.button:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+}
+
+/* Drop the offset duplicate title. One gradient headline is the landing-page version. */
+.stacked {
+    display: block !important;
+    line-height: 1.15 !important;
+    top: 0 !important;
+    height: auto !important;
+}
+
+.stacked > * {
+    line-height: 1.15 !important;
+}
+
+.stacked > :not(:last-child) {
+    display: none !important;
+}
+
+.document_display_box,
+.dir_tree_box {
+    border-radius: 0.9rem !important;
+    border-width: 1px !important;
+}
+
+::selection {
+    background: #5b21b6;
+    color: #fafafa;
+}

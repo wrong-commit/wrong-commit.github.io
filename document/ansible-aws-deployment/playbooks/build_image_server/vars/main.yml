@@ -1,0 +1,10 @@
+# pik_env: BUILD # BUILD
+# hostenvs:
+#   BUILD: 
+#     ec2_size: t2.small
+#     name_prefix: pik-build
+#     rds_size: db.t3.micro
+# name_prefix: "{{ hostenvs[pik_env].name_prefix }}"
+# ec2_size: "{{ hostenvs[pik_env].ec2_size }}"
+# rds_size: "{{ hostenvs[pik_env].rds_size }}"
+# t2.small for building node JS applications and docker files 

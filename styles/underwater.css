@@ -1,0 +1,131 @@
+.underwater-school {
+    position: fixed;
+    left: 0;
+    top: 0;
+    margin: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.underwater-fish {
+    position: absolute;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.underwater-cheep {
+    position: absolute;
+    left: 0;
+    width: 48px;
+    height: 30px;
+    animation-name: underwater-swim;
+    animation-duration: 12s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.underwater-cheep.reverse {
+    animation-direction: reverse;
+}
+
+.underwater-svg {
+    display: block;
+    width: 48px;
+    height: 30px;
+    overflow: visible;
+    animation-name: underwater-bob;
+    animation-duration: 1.2s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+.underwater-cheep.reverse .underwater-svg {
+    animation-name: underwater-bob-back;
+}
+
+.underwater-tail,
+.underwater-body,
+.underwater-belly,
+.underwater-fin,
+.underwater-eye,
+.underwater-pupil {
+    stroke: #000000;
+    stroke-linejoin: round;
+}
+
+.underwater-tail,
+.underwater-body,
+.underwater-belly,
+.underwater-fin,
+.underwater-eye {
+    stroke-width: 1.5;
+}
+
+.underwater-pupil {
+    stroke-width: 0.6;
+}
+
+.underwater-tail,
+.underwater-fin {
+    transform-box: fill-box;
+    animation: underwater-flap 280ms steps(2) infinite;
+}
+
+.underwater-tail {
+    transform-origin: right center;
+}
+
+.underwater-fin-top {
+    transform-origin: center bottom;
+}
+
+.underwater-fin-bottom {
+    transform-origin: center top;
+}
+
+@keyframes underwater-swim {
+    from { transform: translateX(-48px); }
+    to { transform: translateX(var(--underwater-width, 100vw)); }
+}
+
+@keyframes underwater-bob {
+    from { transform: translateY(0); }
+    to { transform: translateY(-3px); }
+}
+
+@keyframes underwater-bob-back {
+    from { transform: translateY(0) scaleX(-1); }
+    to { transform: translateY(-3px) scaleX(-1); }
+}
+
+@keyframes underwater-flap {
+    from { transform: rotate(-12deg); }
+    to { transform: rotate(12deg); }
+}
+
+.underwater-bubble {
+    position: fixed;
+    left: 0;
+    top: 0;
+    box-sizing: border-box;
+    border-radius: 50%;
+    background: #fcfcfc;
+    border: 2px solid #2038ec;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.underwater-bubble::before {
+    content: "";
+    position: absolute;
+    left: 18%;
+    top: 12%;
+    width: 42%;
+    height: 42%;
+    border-radius: 50%;
+    border-top: 2px solid #2038ec;
+    border-left: 2px solid #2038ec;
+    box-sizing: border-box;
+}

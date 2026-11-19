@@ -1,0 +1,29 @@
+- name: Bash script to wait for EC2 Status Checks to report health
+  ansible.builtin.shell: |
+    export AWS_ACCESS_KEY_ID={{ aws_access_key }}
+    export AWS_SECRET_ACCESS_KEY={{ aws_secret_key }}
+    export AWS_DEFAULT_REGION={{ aws_region }}
+    aws cloudwatch get-metric-data \
+      --metric-data-queries '[{"Id":"m1","MetricStat":{"Metric":{"Namespace":"AWS/EC2","MetricName":"StatusCheckFailed","Dimensions":[{"Name":"InstanceId","Value":"i-0891c48b7f44387bc"}]},"Period":21600,"Stat":"Minimum"}}]' \
+      --start-time 2025-01-10T22:10:00Z \
+      --end-time 2025-01-30T22:15:00Z | jq .MetricDataResults[0].Values[0]
+  with_sequence: count=5
+  register: shell_output
+- debug: 
+    var: shell_output
+- set_fact: ec2_status_check_failed_1={{ shell_output.results[0].stdout }}
+- set_fact: ec2_status_check_failed_2={{ shell_output.results[1].stdout }}
+- set_fact: ec2_status_check_failed_3={{ shell_output.results[2].stdout }}
+- set_fact: ec2_status_check_failed_4={{ shell_output.results[3].stdout }}
+- set_fact: ec2_status_check_failed_5={{ shell_output.results[4].stdout }}
+- debug: 
+    msg: "{{ ec2_status_check_failed_1 }}"
+- debug: 
+    msg: "{{ ec2_status_check_failed_2 }}"
+- debug: 
+    msg: "{{ ec2_status_check_failed_3 }}"
+- debug: 
+    msg: "{{ ec2_status_check_failed_4 }}"
+- debug: 
+    msg: "{{ ec2_status_check_failed_5 }}"
+

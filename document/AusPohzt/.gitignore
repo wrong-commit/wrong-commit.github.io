@@ -1,0 +1,19 @@
+# private config ffile
+*/.env
+
+# black holes
+node_modules/
+*/node_modules/
+.DS_STORE
+**/.DS_STORE
+
+# Output notification artifact
+client/client
+client/bogan_post.png
+# Build folders
+*/dist/
+*/build/
+*/lib/
+# Typescript build trash 
+tsconfig.tsbuildinfo
+**/tsconfig.ref.tsbuildinfo

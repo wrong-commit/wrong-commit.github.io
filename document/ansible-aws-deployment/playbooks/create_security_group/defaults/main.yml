@@ -1,0 +1,16 @@
+# Default Security Group Region
+#aws_region: "ap-southeast-2"
+aws_region: "us-west-2"
+# Default SG Name
+security_group_name: "default-security-group"
+# Default SG Description
+security_group_description: "Default security group for testing"
+# Default SG Rules (Allow global SSH)
+security_group_rules:
+  - proto: tcp
+    from_port: 22
+    to_port: 22
+    cidr_ip: 0.0.0.0/0
+security_group_egress_rules:
+  - proto: all
+    cidr_ip: 0.0.0.0/0
