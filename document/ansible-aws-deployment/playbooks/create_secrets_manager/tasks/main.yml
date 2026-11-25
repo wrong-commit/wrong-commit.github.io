@@ -1,0 +1,27 @@
+- assert:
+    that:
+    - aws_access_key != ""
+    - aws_secret_key != ""
+    - conf_api_url != ""
+    - conf_db_host != ""
+    - conf_db_port != ""
+    - conf_db_user != ""
+    - conf_db_pass != ""
+    - secrets_name != ""
+- name: Set AWS default varaibles
+  set_fact:
+    aws_region: ap-southeast-2
+    tag_secret_manager_creation_time: "{{ '%Y%m%d-%H%M%S' | strftime }}"
+- name: Create Secret Manager 
+  community.aws.secretsmanager_secret: 
+    name: "{{ secrets_name }}"
+    overwrite: false
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    json_secret: | 
+      {"INJECT_DB_HOST":"{{ conf_db_host }}","INJECT_DB_PORT":"{{ conf_db_port }}","INJECT_DB_USER":"{{ conf_db_user }}","INJECT_DB_PASS":"{{ conf_db_pass }}","INJECT_API_URL":"{{ conf_api_url }}"}
+  register: secrets_result
+- name: Secrets ARN
+  debug:
+    msg: "Secret ARN: {{ secrets_result.secret.arn }}" 
